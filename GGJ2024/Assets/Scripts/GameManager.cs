@@ -58,8 +58,6 @@ public class GameManager : MonoBehaviour
     {
         cardLibrary = Resources.LoadAll<Card>("Cards");
 
-        Debug.Log(cardLibrary[0]);
-
         deck            = new List<Card>();
         discard         = new List<Card>();
         hand            = new List<Card>();
@@ -133,7 +131,6 @@ public class GameManager : MonoBehaviour
     public void StartTurn(){
         canPlay = false;
         int startSize = hand.Count;
-        Debug.Log("Starting new turn.");
         int toDraw = startHandSize - hand.Count;
         if(toDraw < 0){toDraw=0;}
         StartCoroutine(DrawCards(toDraw, startSize));
@@ -145,11 +142,8 @@ public class GameManager : MonoBehaviour
             UpdateTexts();
         }
 
-        Debug.Log("Hand count: " + hand.Count.ToString());
-
         for(int i = startSize; i < hand.Count; i++){
             //spawn in new card, add it to list so it moves to where it's supposed to go
-            Debug.Log("Instantiating: " + hand[i].name);
             GameObject newCard = Instantiate(cardPrefab, deckPosition.position, Quaternion.identity, cardCanvas.transform);
             newCard.gameObject.GetComponent<CardDisplay>().card = hand[i];
             newCard.gameObject.GetComponent<CardDisplay>().SetupFromCard(this, i);
