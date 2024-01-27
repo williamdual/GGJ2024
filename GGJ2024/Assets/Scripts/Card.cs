@@ -6,10 +6,12 @@ using UnityEngine;
 public class Card : ScriptableObject {
     public string cardName;
     public string description;
+
+    public CardTypeEnum cardType;
     public Sprite artwork;
 
     public int energyCost;
-
-
+    public int healthCost;
+    public int funnyValue;
 
 }
