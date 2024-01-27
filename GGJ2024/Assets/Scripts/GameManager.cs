@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -35,6 +37,10 @@ public class GameManager : MonoBehaviour
     private List<Card> discard;
     private List<Card> hand;
 
+    private TextMeshProUGUI discardText;
+    private TextMeshProUGUI deckText;
+    private bool canPlay;
+
     public static void Shuffle(List<Card> cardList) {
         int count   = cardList.Count;
         int last    = count - 1;
@@ -58,6 +64,8 @@ public class GameManager : MonoBehaviour
         discard         = new List<Card>();
         hand            = new List<Card>();
         handCardObjects = new List<GameObject>();
+        deckText        = cardCanvas.gameObject.transform.Find("Deck/DeckText").GetComponent<TextMeshProUGUI>();
+        discardText     = cardCanvas.gameObject.transform.Find("Discard/DiscardText").GetComponent<TextMeshProUGUI>();
 
         //init bool array
         moveCardObjects = new bool[maxHandSize];
@@ -77,6 +85,16 @@ public class GameManager : MonoBehaviour
     public void AddCardToTopDeck(Card newCard){
         Debug.Log("Adding card to top of deck: " + newCard.cardName);
         deck.Insert(deck.Count, newCard); 
+    }
+
+    public void AddCardToDiscard(Card newCard){
+        Debug.Log("Adding card to discard: " + newCard.cardName);
+        discard.Insert(discard.Count, newCard); 
+    }
+
+    public void UpdateTexts(){
+        discardText.text = "Discard: " + discard.Count.ToString();
+        deckText.text    = "Deck: " + deck.Count.ToString();
     }
 
     // Update is called once per frame
@@ -113,26 +131,32 @@ public class GameManager : MonoBehaviour
     }
 
     public void StartTurn(){
+        canPlay = false;
+        int startSize = hand.Count;
         Debug.Log("Starting new turn.");
-        StartCoroutine(DrawCards(startHandSize));
+        int toDraw = startHandSize - hand.Count;
+        if(toDraw < 0){toDraw=0;}
+        StartCoroutine(DrawCards(toDraw, startSize));
     }
 
-    public IEnumerator DrawCards(int numToDraw){
+    public IEnumerator DrawCards(int numToDraw, int startSize){
         for(int i = 0; i < numToDraw; i++){
             _DrawCard();
+            UpdateTexts();
         }
 
         Debug.Log("Hand count: " + hand.Count.ToString());
 
-        for(int i = 0; i < hand.Count; i++){
+        for(int i = startSize; i < hand.Count; i++){
             //spawn in new card, add it to list so it moves to where it's supposed to go
             Debug.Log("Instantiating: " + hand[i].name);
             GameObject newCard = Instantiate(cardPrefab, deckPosition.position, Quaternion.identity, cardCanvas.transform);
             newCard.gameObject.GetComponent<CardDisplay>().card = hand[i];
-            newCard.gameObject.GetComponent<CardDisplay>().SetupFromCard();
+            newCard.gameObject.GetComponent<CardDisplay>().SetupFromCard(this, i);
             handCardObjects.Add(newCard);
             yield return new WaitForSeconds(0.5f);
         }
+        canPlay = true;
     }
 
     //should ONLY be called in DrawCards()
@@ -142,7 +166,7 @@ public class GameManager : MonoBehaviour
             if(deck.Count == 0){
                 if(discard.Count == 0){return;}
                 for(int i = 0; i < discard.Count; i++){
-                    deck[i] = discard[i];
+                    deck.Add(discard[i]);
                 }
                 discard.Clear();
                 GameManager.Shuffle(hand);
@@ -154,5 +178,39 @@ public class GameManager : MonoBehaviour
             moveCardObjects[hand.Count-1] = true;
             deck.RemoveAt(toDrawIndex);
         }
+    }
+
+    public void SetCardCanMove(bool canMove, int listIndex){
+        moveCardObjects[listIndex] = canMove;
+    }
+
+    public void PlayCard(int listIndex){
+        //TODO: do effects, see if u have enough resources
+        if(canPlay){
+            GameObject cardObj      = handCardObjects[listIndex];
+            CardDisplay cardScript  = cardObj.GetComponent<CardDisplay>();
+            
+            AddCardToDiscard(hand[listIndex]);
+            hand.RemoveAt(listIndex);
+            handCardObjects.RemoveAt(listIndex);
+
+
+            AudioSource.PlayClipAtPoint(cardScript.ReturnAudioClip(), Vector3.zero);
+            
+            for(int i = listIndex; i < maxHandSize-1; i++){
+                moveCardObjects[i] = moveCardObjects[i+1];
+                if(i < handCardObjects.Count){
+                    handCardObjects[i].GetComponent<CardDisplay>().SetListPos(i);
+                }
+            }
+
+            UpdateTexts();
+            Destroy(cardObj.gameObject);
+        }
+    }
+
+    public void EndTurn(){
+        //refresh energy
+        StartTurn();
     }
 }

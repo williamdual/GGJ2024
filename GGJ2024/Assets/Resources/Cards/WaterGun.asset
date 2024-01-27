@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Water Gun
   description: Bring out a water gun and spray down the audience in funny water!
-  cardType: 6
+  cardType: 0
   artwork: {fileID: 21300000, guid: 6f4ea111014de4a958ae392bf1d758a3, type: 3}
   energyCost: 1
   healthCost: 0
   funnyValue: 2
+  audioClip: {fileID: 8300000, guid: 796cec796e8ac4da4a1ff338396fb73c, type: 3}

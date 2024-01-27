@@ -19,3 +19,4 @@ MonoBehaviour:
   energyCost: 1
   healthCost: 0
   funnyValue: 1
+  audioClip: {fileID: 8300000, guid: 796cec796e8ac4da4a1ff338396fb73c, type: 3}

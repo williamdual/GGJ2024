@@ -14,4 +14,6 @@ public class Card : ScriptableObject {
     public int healthCost;
     public int funnyValue;
 
+    public AudioClip audioClip;
+
 }
