@@ -15,7 +15,7 @@ MonoBehaviour:
   description: She's like a catchy song, can't get her out of my head ~COSTS 3 Emotion~
   isCrowdwork: 0
   cardType: 3
-  artwork: {fileID: 21300000, guid: 667b260c5614149eea018e7383f622d9, type: 3}
+  artwork: {fileID: 21300000, guid: 6bdcfcbd52cce49debb0931601a7385b, type: 3}
   energyCost: 4
   funnyValue: 7
   minFunnyValuePercentRange: 100

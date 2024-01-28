@@ -16,7 +16,7 @@ MonoBehaviour:
     careers ~STALE Card~'
   isCrowdwork: 0
   cardType: 4
-  artwork: {fileID: 21300000, guid: 667b260c5614149eea018e7383f622d9, type: 3}
+  artwork: {fileID: 21300000, guid: e0a2cebfe46404c79afd5cdcdcb4eb94, type: 3}
   energyCost: 1
   funnyValue: 4
   minFunnyValuePercentRange: 100

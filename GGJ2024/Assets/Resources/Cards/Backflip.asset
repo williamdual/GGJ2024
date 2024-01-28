@@ -15,7 +15,7 @@ MonoBehaviour:
   description: '*Attempt a backflip ~30% Chance Of Only -1 HP~'
   isCrowdwork: 0
   cardType: 5
-  artwork: {fileID: 21300000, guid: 667b260c5614149eea018e7383f622d9, type: 3}
+  artwork: {fileID: 21300000, guid: 52678375c957e4648bac2b59597453e8, type: 3}
   energyCost: 0
   funnyValue: 9
   minFunnyValuePercentRange: 100

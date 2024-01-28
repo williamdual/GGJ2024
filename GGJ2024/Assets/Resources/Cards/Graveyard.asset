@@ -16,7 +16,7 @@ MonoBehaviour:
     TURN If Not Suspensed~
   isCrowdwork: 0
   cardType: 1
-  artwork: {fileID: 21300000, guid: 667b260c5614149eea018e7383f622d9, type: 3}
+  artwork: {fileID: 21300000, guid: 40c24720fee4d4562bebc38144659507, type: 3}
   energyCost: 6
   funnyValue: 4
   minFunnyValuePercentRange: 100

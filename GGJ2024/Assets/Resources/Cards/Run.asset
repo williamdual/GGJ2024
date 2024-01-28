@@ -16,7 +16,7 @@ MonoBehaviour:
     2 Overcharge~
   isCrowdwork: 0
   cardType: 0
-  artwork: {fileID: 21300000, guid: 667b260c5614149eea018e7383f622d9, type: 3}
+  artwork: {fileID: 21300000, guid: b9a79350de5dd4e00ae55cd5c8fd84da, type: 3}
   energyCost: 2
   funnyValue: 2
   minFunnyValuePercentRange: 100

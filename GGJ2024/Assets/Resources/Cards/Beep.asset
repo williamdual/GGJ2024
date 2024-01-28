@@ -16,7 +16,7 @@ MonoBehaviour:
     hear him over the beep ~DISCARD 2 Random or Ends Turn~
   isCrowdwork: 0
   cardType: 1
-  artwork: {fileID: 21300000, guid: 667b260c5614149eea018e7383f622d9, type: 3}
+  artwork: {fileID: 21300000, guid: f14b86b43bbb84db1a33c0a4917b14f6, type: 3}
   energyCost: 5
   funnyValue: 3
   minFunnyValuePercentRange: 100

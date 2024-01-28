@@ -15,7 +15,7 @@ MonoBehaviour:
   description: My wife says I never listen... Or something like that ~GRANTS 3 Overcharge~
   isCrowdwork: 0
   cardType: 0
-  artwork: {fileID: 21300000, guid: 667b260c5614149eea018e7383f622d9, type: 3}
+  artwork: {fileID: 21300000, guid: 044049ac2af2d4c66a2d501c1852bbae, type: 3}
   energyCost: 2
   funnyValue: 0
   minFunnyValuePercentRange: 100
