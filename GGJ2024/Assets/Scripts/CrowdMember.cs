@@ -27,7 +27,8 @@ public class CrowdMember : MonoBehaviour
     private float angryThreshold    = 0.00f;
     [SerializeField] private Mood currMood = Mood.Neutral;
 
-    public GameObject textPrefab;
+    private GameObject sadTextPrefab;
+    private GameObject happyTextPrefab;
     [SerializeField] private ParticleSystem confetti;
 
     [SerializeField] private List<Sprite> faces;
@@ -74,6 +75,9 @@ public class CrowdMember : MonoBehaviour
         sadQuotes.Add("*YAWN*");
         GameObject confettiObj = Instantiate(confetti.gameObject, transform.position, Quaternion.identity);
 
+        happyTextPrefab = (GameObject)Resources.Load("Prefabs/HappyText");
+        sadTextPrefab   = (GameObject)Resources.Load("Prefabs/SadText");
+
         BeNeutral();
     }
 
@@ -107,12 +111,14 @@ public class CrowdMember : MonoBehaviour
     }
 
     public void TakeDamage(int funnyDamage, CardTypeEnum cardType){
+        Debug.Log("(TYPE: " + type.ToString() + ", CARD TYPE: " + cardType.ToString() + ")\nTaking pre-damage: " + funnyDamage.ToString());
         if(dislikes[type].Contains(cardType)){
             funnyDamage = ((int)(funnyDamage/2)) * -1;
         }
         else if(cardType == type){
             funnyDamage = (int)(funnyDamage*1.5f);
         }
+        Debug.Log("Taking post-damage: " + funnyDamage.ToString());
 
         //sfx depending on damage?
         curFunny += funnyDamage;
@@ -123,35 +129,43 @@ public class CrowdMember : MonoBehaviour
         if(randGen <= 10){
             if(funnyDamage > 0){
                 Debug.Log("Spawned happy text");
-                int randFont = UnityEngine.Random.Range(24, 37);
-                int randIndex = UnityEngine.Random.Range(0, happyQuotes.Count);
-                GameObject txt = Instantiate(textPrefab, gameObject.transform.position, Quaternion.identity, gameObject.transform);
+                int randFont    = UnityEngine.Random.Range(24, 37);
+                int randIndex   = UnityEngine.Random.Range(0, happyQuotes.Count);
+                GameObject txt  = Instantiate(happyTextPrefab, gameObject.transform.position, Quaternion.identity, gameObject.transform);
                 txt.gameObject.GetComponent<TextMeshPro>().text = happyQuotes[randIndex];
                 txt.gameObject.GetComponent<TextMeshPro>().fontSize = randFont;
+                float randLife = UnityEngine.Random.Range(1.0f, 3.0f);
+                txt.gameObject.GetComponent<HappyReactionText>().lifeTime = randLife;
             }
             else if(funnyDamage < 0){
                 Debug.Log("Spawned sad text");
                 int randFont = UnityEngine.Random.Range(24, 37);
                 int randIndex = UnityEngine.Random.Range(0, sadQuotes.Count);
-                GameObject txt = Instantiate(textPrefab, gameObject.transform.position, Quaternion.identity, gameObject.transform);
-                txt.gameObject.GetComponent<TextMeshProUGUI>().text = sadQuotes[randIndex];
-                txt.gameObject.GetComponent<TextMeshProUGUI>().fontSize = randFont;
+                GameObject txt = Instantiate(sadTextPrefab, gameObject.transform.position, Quaternion.identity, gameObject.transform);
+                txt.gameObject.GetComponent<TextMeshPro>().text = sadQuotes[randIndex];
+                txt.gameObject.GetComponent<TextMeshPro>().fontSize = randFont;
+                float randLife = UnityEngine.Random.Range(1.5f, 4.0f);
+                txt.gameObject.GetComponent<SadReactionText>().lifeTime = randLife;
             }
         }
 
-        if(curFunny >= ecstaticThreshold){
+        float fracVal = (float)curFunny/(float)maxFunny;
+
+        Debug.Log("FRACVAL: " + fracVal.ToString());
+
+        if(fracVal >= ecstaticThreshold){
             currMood = Mood.Ecstatic;
         }
-        else if(curFunny >= happyThreshold){
+        else if(fracVal >= happyThreshold){
             currMood = Mood.Happy;
         }
-        else if(curFunny >= neutralThreshold){
+        else if(fracVal >= neutralThreshold){
             currMood = Mood.Neutral;
         }
-        else if(curFunny >= sadThreshold){
+        else if(fracVal >= sadThreshold){
             currMood = Mood.Sad;
         }
-        else if(curFunny >= angryThreshold){
+        else if(fracVal >= angryThreshold){
             currMood = Mood.Angry;
         }
 
@@ -163,10 +177,6 @@ public class CrowdMember : MonoBehaviour
             GoodLeave();
             return;
         }
-        
-        float fractionResult = curFunny/maxFunny;
-
-
     }
 
     public void BadLeave(){
