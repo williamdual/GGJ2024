@@ -112,8 +112,7 @@ public class EventManager : MonoBehaviour
             CrowdMember cm =  allObjs[i];
             if (cm.type == cardType)
             {
-                SpriteRenderer sprite = cm.GetComponent<SpriteRenderer>();
-                sprite.color = Globals.CardTypeToColor[cardType];
+                cm.Highlight(Globals.CardTypeToColor[cardType]);
             }
         }
 

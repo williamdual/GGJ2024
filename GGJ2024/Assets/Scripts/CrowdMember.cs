@@ -46,7 +46,7 @@ public class CrowdMember : MonoBehaviour
 
     public CardTypeEnum type;
     public int maxFunny = 20;
-    private int curFunny = 10;
+    [SerializeField] private int curFunny = 10;
 
     void Start(){
         curFunny=(int)(maxFunny/2);
@@ -126,8 +126,8 @@ public class CrowdMember : MonoBehaviour
                 int randFont = UnityEngine.Random.Range(24, 37);
                 int randIndex = UnityEngine.Random.Range(0, happyQuotes.Count);
                 GameObject txt = Instantiate(textPrefab, gameObject.transform.position, Quaternion.identity, gameObject.transform);
-                txt.gameObject.GetComponent<TextMeshProUGUI>().text = happyQuotes[randIndex];
-                txt.gameObject.GetComponent<TextMeshProUGUI>().fontSize = randFont;
+                txt.gameObject.GetComponent<TextMeshPro>().text = happyQuotes[randIndex];
+                txt.gameObject.GetComponent<TextMeshPro>().fontSize = randFont;
             }
             else if(funnyDamage < 0){
                 Debug.Log("Spawned sad text");
@@ -137,6 +137,22 @@ public class CrowdMember : MonoBehaviour
                 txt.gameObject.GetComponent<TextMeshProUGUI>().text = sadQuotes[randIndex];
                 txt.gameObject.GetComponent<TextMeshProUGUI>().fontSize = randFont;
             }
+        }
+
+        if(curFunny >= ecstaticThreshold){
+            currMood = Mood.Ecstatic;
+        }
+        else if(curFunny >= happyThreshold){
+            currMood = Mood.Happy;
+        }
+        else if(curFunny >= neutralThreshold){
+            currMood = Mood.Neutral;
+        }
+        else if(curFunny >= sadThreshold){
+            currMood = Mood.Sad;
+        }
+        else if(curFunny >= angryThreshold){
+            currMood = Mood.Angry;
         }
 
         if(curFunny <= 0){
@@ -150,21 +166,7 @@ public class CrowdMember : MonoBehaviour
         
         float fractionResult = curFunny/maxFunny;
 
-        if(curFunny >= ecstaticThreshold){
-            BeEcstatic();
-        }
-        else if(curFunny >= happyThreshold){
-            BeHappy();
-        }
-        else if(curFunny >= neutralThreshold){
-            BeNeutral();
-        }
-        else if(curFunny >= sadThreshold){
-            BeSad();
-        }
-        else if(curFunny >= angryThreshold){
-            BeAngry();
-        }
+
     }
 
     public void BadLeave(){
@@ -221,5 +223,12 @@ public class CrowdMember : MonoBehaviour
         Animator anim = transform.Find("ArmsParent").GetComponent<Animator>();
         anim.gameObject.GetComponent<Animator>().Play("ArmsNeutral");
         anim.speed =   1.0f;
+    }
+
+    public void Highlight(Color color)
+    {
+        GameObject body = transform.Find("Body").gameObject;
+        body.GetComponent<SpriteRenderer>().color = Color.white;
+
     }
 }
