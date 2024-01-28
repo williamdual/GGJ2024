@@ -24,5 +24,6 @@ public static Dictionary<CardTypeEnum, List<String>> CardTypeToNonStartingCardNa
         {CardTypeEnum.Romance, new List<String>() {"LoveSong", "LovePotato", "LoveFart", "ThirdWife"}},
         {CardTypeEnum.Deprecating, new List<String>() {"Unemployed", "GaryAlcoholic", "Alcohol", "Circumsision"}}
 };
+
 }
 

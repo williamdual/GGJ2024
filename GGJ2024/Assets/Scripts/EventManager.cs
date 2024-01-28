@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -13,6 +14,12 @@ public class EventManager : MonoBehaviour
     private GameManager gameManager;
 
     public CardTypeEnum startingDeck;
+    public int numOfCardsToOffer = 3; //Never go above 5
+    List<Card> cardsToOffer = new List<Card>();
+    List<int> selectedCardIndexes = new List<int>();
+    public int numOfCardsToAccept = 2;
+    int numOfCardsLeft = 0;
+    public List<Transform> shopPositions;
 
     public enum GameState {
         Round,
@@ -22,6 +29,8 @@ public class EventManager : MonoBehaviour
     public GameState gameState;
     public Canvas cardCanvas;
 
+    Dictionary<CardTypeEnum, GameObject> preFabMap;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +39,9 @@ public class EventManager : MonoBehaviour
         gameState   = GameState.startingDeckSelection;
         mainOptionCanvas.SetActive(true);
         deckSelectObj.SetActive(true);
+
+        preFabMap = gameManager.getPreFabMap();
+
         Time.timeScale = 0;
     }
 
@@ -38,17 +50,26 @@ public class EventManager : MonoBehaviour
     {
 
     }
-    public void initgameManager(GameManager g)
-    {
-        gameManager = g;
-        gameState = GameState.startingDeckSelection;
-    }
 
     public void cycleState()
     {
         if(gameState ==  GameState.startingDeckSelection)
         {
-            gameManager.StartRound(startingDeck);
+            gameManager.InitDeck(startingDeck);
+            gameState = GameState.Round;   
+            gameManager.StartRound();
+        }
+        else if (gameState ==  GameState.CardAdd)
+        {
+            mainOptionCanvas.SetActive(false);
+            gameState = GameState.Round;   
+            gameManager.StartRound();
+        }
+        else if (gameState == GameState.Round)
+        {
+            mainOptionCanvas.SetActive(true);
+            gameState = GameState.CardAdd;
+            OfferCards(Resources.LoadAll<Card>("Cards"));
         }
         
     }
@@ -99,8 +120,6 @@ public class EventManager : MonoBehaviour
     }
 
     public void OfferCards(Card[] CardPool){
-        int numOfCardsToOffer = 3;
-        int numOfCardsToAccept = 2;
         List<int> selectedCardNums = new List<int>();
         for(int i = 0; i < numOfCardsToOffer; i++)
         {
@@ -111,9 +130,36 @@ public class EventManager : MonoBehaviour
             }
             selectedCardNums.Add(selectedIndex);
         }
+        for(int i = 0; i < selectedCardNums.Count; i++)
+        {
+            cardsToOffer.Add(CardPool[selectedCardNums[i]]);
+        }
+        numOfCardsLeft = numOfCardsToAccept;
         //Now you have all of the indexes of the cards to offer (with no repatitions)
         //TODO Put card GUI and responce
-        
+        for(int i = 0; i < cardsToOffer.Count; i++){
+            GameObject cardPrefab = gameManager.getPreFabMap()[cardsToOffer[i].cardType];
+            Debug.Log("CARD Select PREFAB: " + cardPrefab.name);
+            //spawn in new card, add it to list so it moves to where it's supposed to go
+            GameObject newCard = Instantiate(cardPrefab, shopPositions[i].position, Quaternion.identity, mainOptionCanvas.transform);
+            newCard.gameObject.GetComponent<CardDisplay>().card = cardsToOffer[i];
+            newCard.gameObject.GetComponent<CardDisplay>().setUpCardShop(this, i);
+        }
     }
-
+    public void selectCard(int listPos)
+    {
+        if(!selectedCardIndexes.Contains(listPos))
+        {
+            Card cardToAdd = cardsToOffer[listPos];     
+            selectedCardIndexes.Add(listPos);
+            numOfCardsLeft--;
+            gameManager.deck.Add(cardToAdd);
+        }
+        if(numOfCardsLeft <= 0)
+        {
+            cardsToOffer.Clear();
+            selectedCardIndexes.Clear();
+            cycleState();
+        }
+    }
 }

@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     //IMPORTANT: the top of the 'deck' will be the last element in the lists, since popping from back
     //of a list is way more efficient
 
-    private Dictionary<String, Card> cardLibrary;
+    public Dictionary<String, Card> cardLibrary;
     public Canvas cardCanvas;
     public GameObject cornyPrefab;
     public GameObject familyPrefab;
@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI suspenseText;
     private TextMeshProUGUI overchargeText;
 
-    private List<Card> deck;
+    public List<Card> deck;
 
     //parallel, moveCardObjects[i] represents if handCardObjects[i] should be moving towards its hand place
     private List<GameObject> handCardObjects;
@@ -80,14 +80,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        prefabMap = new Dictionary<CardTypeEnum, GameObject>(){
-        {CardTypeEnum.Family, familyPrefab},
-        {CardTypeEnum.Dark, darkPrefab},
-        {CardTypeEnum.Animals, animalsPrefab},
-        {CardTypeEnum.Romance, romancePrefab},
-        {CardTypeEnum.Deprecating, deprecatingPrefab},
-        {CardTypeEnum.Prop, propPrefab},
-        {CardTypeEnum.Corny, cornyPrefab}};
+        prefabMap = getPreFabMap();
 
         cardLibrary = new Dictionary<string, Card>();
 
@@ -118,9 +111,19 @@ public class GameManager : MonoBehaviour
         eventManager = gameObject.GetComponent<EventManager>(); 
     }
 
-    public void StartRound(CardTypeEnum cardType){
-        InitDeck(cardType);
-        eventManager.gameState = EventManager.GameState.Round;   
+    public Dictionary<CardTypeEnum, GameObject> getPreFabMap()
+    {
+        return new Dictionary<CardTypeEnum, GameObject>(){
+        {CardTypeEnum.Family, familyPrefab},
+        {CardTypeEnum.Dark, darkPrefab},
+        {CardTypeEnum.Animals, animalsPrefab},
+        {CardTypeEnum.Romance, romancePrefab},
+        {CardTypeEnum.Deprecating, deprecatingPrefab},
+        {CardTypeEnum.Prop, propPrefab},
+        {CardTypeEnum.Corny, cornyPrefab}};
+    }
+
+    public void StartRound(){
         StartTurn();
     }
     public void AddCardToBottomDeck(Card newCard){
@@ -175,7 +178,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void InitDeck(CardTypeEnum cardType){
+    public void InitDeck(CardTypeEnum cardType){
         AddCardToTopDeck(cardLibrary["KnockKnock"]);
         AddCardToTopDeck(cardLibrary["HonkHonk"]);
         AddCardToTopDeck(cardLibrary["EvilStairs"]);
