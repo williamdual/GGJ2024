@@ -9,6 +9,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private EventManager eventManager = new EventManager();
     private float CARD_DRAW_SPEED           = 12.0f;
 
     private float SLOW_DOWN_DIST            = 5.0f;
@@ -306,7 +307,7 @@ public class GameManager : MonoBehaviour
             }
 
             TakeDamage(hpCost);
-
+            if(cardScript.card.isCrowdwork){ eventManager.highlightCrowdMembers(cardScript.card.cardType);}
             //good sound (played the card)
             AudioSource.PlayClipAtPoint(cardScript.ReturnAudioClip(), Vector3.zero);
 
