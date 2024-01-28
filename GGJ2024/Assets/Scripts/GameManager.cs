@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private EventManager eventManager = new EventManager();
+    private EventManager eventManager;
     private float CARD_DRAW_SPEED           = 12.0f;
 
     private float SLOW_DOWN_DIST            = 5.0f;
@@ -114,7 +114,11 @@ public class GameManager : MonoBehaviour
             moveCardObjects[i] = false;
         }
 
-        InitDeck();
+        eventManager = gameObject.GetComponent<EventManager>();        
+    }
+
+    public void StartRound(CardTypeEnum cardType){
+        InitDeck(cardType);
         StartTurn();
     }
 
@@ -167,13 +171,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void InitDeck(){
+    private void InitDeck(CardTypeEnum cardType){
         AddCardToTopDeck(cardLibrary["KnockKnock"]);
         AddCardToTopDeck(cardLibrary["HonkHonk"]);
         AddCardToTopDeck(cardLibrary["EvilStairs"]);
         AddCardToTopDeck(cardLibrary["StrikeOut"]);
         AddCardToTopDeck(cardLibrary["Noise"]);
         AddCardToTopDeck(cardLibrary["DogMath"]);
+
+        List<String> cardsToAdd = Globals.CardTypeToNonStartingCardNames[cardType];
+        for(int i = 0; i < cardsToAdd.Count; i++){
+            AddCardToTopDeck(cardLibrary[cardsToAdd[i]]);
+        }
+
         GameManager.Shuffle(deck);
     }
 
@@ -371,13 +381,15 @@ public class GameManager : MonoBehaviour
     }
 
     public void EndTurn(){
-        //refresh energy
-        curOvercharge = 0;
-        curEnergy += 3;
-        if(curEnergy > maxEnergy){
-            curEnergy=maxEnergy;
+        if(eventManager.gameState == EventManager.GameState.Round){
+            //refresh energy
+            curOvercharge = 0;
+            curEnergy += 3;
+            if(curEnergy > maxEnergy){
+                curEnergy=maxEnergy;
+            }
+            UpdateTexts();
+            StartTurn();
         }
-        UpdateTexts();
-        StartTurn();
     }
 }
