@@ -12,6 +12,8 @@ public class EventManager : MonoBehaviour
     public GameObject deckSelectObj;
     private GameManager gameManager;
 
+    public CardTypeEnum startingDeck;
+
     public enum GameState {
         Round,
         CardAdd,
@@ -19,9 +21,11 @@ public class EventManager : MonoBehaviour
     }
     public GameState gameState;
     public Canvas cardCanvas;
+
     // Start is called before the first frame update
     void Start()
     {
+
         gameManager = gameObject.GetComponent<GameManager>();
         gameState   = GameState.startingDeckSelection;
         mainOptionCanvas.SetActive(true);
@@ -32,6 +36,20 @@ public class EventManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+    }
+    public void initgameManager(GameManager g)
+    {
+        gameManager = g;
+        gameState = GameState.startingDeckSelection;
+    }
+
+    public void cycleState()
+    {
+        if(gameState ==  GameState.startingDeckSelection)
+        {
+            gameManager.StartRound(startingDeck);
+        }
         
     }
 
@@ -39,8 +57,8 @@ public class EventManager : MonoBehaviour
         Time.timeScale = 1;
         deckSelectObj.SetActive(false);
         mainOptionCanvas.SetActive(false);
-        gameManager.StartRound(cardType);
-        gameState = GameState.Round;
+        startingDeck = cardType;
+        cycleState();
     }
 
     public void SetStartingDeckString(String strCardType){

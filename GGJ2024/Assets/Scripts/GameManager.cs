@@ -114,14 +114,14 @@ public class GameManager : MonoBehaviour
             moveCardObjects[i] = false;
         }
 
-        eventManager = gameObject.GetComponent<EventManager>();        
+        eventManager = gameObject.GetComponent<EventManager>(); 
     }
 
     public void StartRound(CardTypeEnum cardType){
         InitDeck(cardType);
+        eventManager.gameState = EventManager.GameState.Round;   
         StartTurn();
     }
-
     public void AddCardToBottomDeck(Card newCard){
         deck.Insert(0, newCard); 
     }
@@ -148,24 +148,27 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float step          = CARD_DRAW_SPEED * Time.deltaTime;
-        float slow_step     = SLOW_CARD_DRAW_SPEED * Time.deltaTime;
-        float slow_step_two = SLOW_CARD_DRAW_SPEED_TWO * Time.deltaTime;
+        if(eventManager.gameState == EventManager.GameState.Round)
+        {
+            float step          = CARD_DRAW_SPEED * Time.deltaTime;
+            float slow_step     = SLOW_CARD_DRAW_SPEED * Time.deltaTime;
+            float slow_step_two = SLOW_CARD_DRAW_SPEED_TWO * Time.deltaTime;
 
-        for(int i = 0; i < handCardObjects.Count; i++){
-            //move cards to where they're supposed to be
-            if(true == moveCardObjects[i]){
-                Vector2 target  = cardPositions[i].position;
-                float dist      = Vector2.Distance(target,handCardObjects[i].transform.position);
-                
-                if(dist < SLOW_DOWN_DIST_TWO){
-                    handCardObjects[i].transform.position = Vector2.MoveTowards(handCardObjects[i].transform.position, target, slow_step_two);
-                }
-                else if(dist < SLOW_DOWN_DIST){
-                    handCardObjects[i].transform.position = Vector2.MoveTowards(handCardObjects[i].transform.position, target, slow_step);
-                }
-                else{
-                    handCardObjects[i].transform.position = Vector2.MoveTowards(handCardObjects[i].transform.position, target, step);
+            for(int i = 0; i < handCardObjects.Count; i++){
+                //move cards to where they're supposed to be
+                if(true == moveCardObjects[i]){
+                    Vector2 target  = cardPositions[i].position;
+                    float dist      = Vector2.Distance(target,handCardObjects[i].transform.position);
+                    
+                    if(dist < SLOW_DOWN_DIST_TWO){
+                        handCardObjects[i].transform.position = Vector2.MoveTowards(handCardObjects[i].transform.position, target, slow_step_two);
+                    }
+                    else if(dist < SLOW_DOWN_DIST){
+                        handCardObjects[i].transform.position = Vector2.MoveTowards(handCardObjects[i].transform.position, target, slow_step);
+                    }
+                    else{
+                        handCardObjects[i].transform.position = Vector2.MoveTowards(handCardObjects[i].transform.position, target, step);
+                    }
                 }
             }
         }
