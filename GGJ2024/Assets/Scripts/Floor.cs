@@ -39,14 +39,11 @@ public class Floor : MonoBehaviour
         {
             return true;
         }
-        Debug.Log($"Density: {density}");
         foreach (Vector2 position in occupiedPositions)
         {
             float distance = Mathf.Sqrt( Mathf.Pow(newPosition.x - position.x, 2) + Mathf.Pow(newPosition.y - position.y, 2));
             if (distance < tooClose)
             {
-                Debug.Log($"Too close: {distance} < {tooClose}");
-                Debug.Log($"Population density: {density}");
                 return false;
             } 
         }

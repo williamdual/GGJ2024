@@ -138,12 +138,17 @@ public class CardDisplay : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.CompareTag("PlayArea")){
             playingCard = true;
+            if (gameManager.GetCanPlay())
+            {
+                GameObject.FindWithTag("Floor").GetComponent<SpriteRenderer>().enabled = true;
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D other) {
         if(other.CompareTag("PlayArea")){
             playingCard = false;
+            GameObject.FindWithTag("Floor").GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 }

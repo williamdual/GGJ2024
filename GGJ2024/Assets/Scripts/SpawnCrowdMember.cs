@@ -30,6 +30,7 @@ public class Spawner : MonoBehaviour
     {
         GameObject crowdMember = Instantiate(crowdMemberPrefab, transform.position, Quaternion.identity);
         crowdMember.transform.parent = transform;
+
         return crowdMember;
     }
 
@@ -41,7 +42,7 @@ public class Spawner : MonoBehaviour
     }
 
 
-    private void ChooseRandomPosition(GameObject crowdMember)
+    private Vector2 ChooseRandomPosition(GameObject crowdMember)
     {
         float x = Random.Range(topLeft.x + boundsOffset.x, bottomRight.x - boundsOffset.x);
         float y = Random.Range(topLeft.y + boundsOffset.y, bottomRight.y - boundsOffset.y);
@@ -51,8 +52,9 @@ public class Spawner : MonoBehaviour
             y = Random.Range(topLeft.y + boundsOffset.y, bottomRight.y - boundsOffset.y);
         }
         floor.GetComponent<Floor>().occupiedPositions.Add(new Vector2(x, y));
-        crowdMember.GetComponent<CrowdMember>().targetPosition = new Vector2(x, y);
+        return new Vector2(x, y);
     }
+
 
     void Start()
     {
@@ -60,15 +62,21 @@ public class Spawner : MonoBehaviour
         floor.GetComponent<SpriteRenderer>().enabled = false;
         topLeft = floor.GetComponent<Renderer>().bounds.min;
         bottomRight = floor.GetComponent<Renderer>().bounds.max;
+        Spawn();
+        Spawn();
+        Spawn();
     }
     //Debug Function
 
+    public void Spawn()
+    {
+        GameObject crowdMember = SpawnCrowdMember();   
+        crowdMember.GetComponent<CrowdMember>().UpdatePosition(ChooseRandomPosition(crowdMember));
+    }
 
     public void OnClick()
     {  
-        GameObject crowdMember = SpawnCrowdMember();   
-        crowdMember.GetComponent<CrowdMember>().GetSize();
-        ChooseRandomPosition(crowdMember);
+        SpawnCrowdMember();
 
     }
 }

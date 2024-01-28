@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayArea
   - GameManager
+  - Floor
   layers:
   - Default
   - TransparentFX

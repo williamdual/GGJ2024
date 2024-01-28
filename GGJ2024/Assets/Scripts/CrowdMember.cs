@@ -17,6 +17,8 @@ using UnityEngine.UIElements;
 public class CrowdMember : MonoBehaviour 
 {
 
+    const int minFont = 12;
+    const int maxFont = 20;
     private List<String> happyQuotes;
     private List<String> sadQuotes;
 
@@ -30,6 +32,7 @@ public class CrowdMember : MonoBehaviour
     private GameObject sadTextPrefab;
     private GameObject happyTextPrefab;
     [SerializeField] private ParticleSystem confetti;
+    [SerializeField] private ParticleSystem sadParticles;
 
     [SerializeField] private List<Sprite> faces;
     private Dictionary<CardTypeEnum, CardTypeEnum[]> dislikes = new Dictionary<CardTypeEnum, CardTypeEnum[]>(){
@@ -41,7 +44,6 @@ public class CrowdMember : MonoBehaviour
     {CardTypeEnum.Prop, new CardTypeEnum[] {CardTypeEnum.None}},
     {CardTypeEnum.Corny, new CardTypeEnum[] {CardTypeEnum.None}}};
 
-    public Vector2 targetPosition;
     public float speed = 1.0f;
     public float size; 
 
@@ -56,8 +58,6 @@ public class CrowdMember : MonoBehaviour
         int rand = UnityEngine.Random.Range(0, Globals.CrowdMemberTypesList.Count);
         type = Globals.CrowdMemberTypesList[rand];
         curFunny=(int)(maxFunny/2);
-
-        transform.position = targetPosition;
 
         happyQuotes = new List<String>();
         sadQuotes   = new List<String>();
@@ -80,7 +80,7 @@ public class CrowdMember : MonoBehaviour
         sadQuotes.Add("Get a new joke book...");
         sadQuotes.Add("I'm 'bouta puke");
         sadQuotes.Add("*YAWN*");
-        
+
         GameObject confettiObj = Instantiate(confetti.gameObject, new Vector3(transform.position.x, transform.position.y - 0.2f, transform.position.z),  Quaternion.identity);
 
         happyTextPrefab = (GameObject)Resources.Load("Prefabs/HappyText");
@@ -136,7 +136,7 @@ public class CrowdMember : MonoBehaviour
         if(randGen <= 10){
             if(funnyDamage > 0){
                 Debug.Log("Spawned happy text");
-                int randFont    = UnityEngine.Random.Range(24, 37);
+                int randFont    = UnityEngine.Random.Range(minFont, maxFont);
                 int randIndex   = UnityEngine.Random.Range(0, happyQuotes.Count);
                 GameObject txt  = Instantiate(happyTextPrefab, gameObject.transform.position, Quaternion.identity, gameObject.transform);
                 txt.gameObject.GetComponent<TextMeshPro>().text = happyQuotes[randIndex];
@@ -146,7 +146,7 @@ public class CrowdMember : MonoBehaviour
             }
             else if(funnyDamage < 0){
                 Debug.Log("Spawned sad text");
-                int randFont = UnityEngine.Random.Range(24, 37);
+                int randFont = UnityEngine.Random.Range(minFont, maxFont);
                 int randIndex = UnityEngine.Random.Range(0, sadQuotes.Count);
                 GameObject txt = Instantiate(sadTextPrefab, gameObject.transform.position, Quaternion.identity, gameObject.transform);
                 txt.gameObject.GetComponent<TextMeshPro>().text = sadQuotes[randIndex];
@@ -188,11 +188,15 @@ public class CrowdMember : MonoBehaviour
 
     public void BadLeave(){
         Debug.Log("A crowd member has badly left.");
+        GameObject confettiObj = Instantiate(sadParticles.gameObject, transform.position, Quaternion.identity);
+        StartCoroutine(BlipOut());
+        Destroy(gameObject);
     }
 
     public void GoodLeave(){
         Debug.Log("A crowd member has well left.");
         GameObject confettiObj = Instantiate(confetti.gameObject, transform.position, Quaternion.identity);
+        StartCoroutine(BlipOut());
         Destroy(gameObject);
 
     }
@@ -261,5 +265,22 @@ public class CrowdMember : MonoBehaviour
             transform.localScale = Vector3.Lerp(Vector3.zero, new Vector3(0.3f,0.3f,0.3f), time);
             yield return null;
         }
+    }
+
+    private IEnumerator BlipOut()
+    {
+        float time = 0;
+        while (transform.localScale.x > 0)
+        {
+            time += Time.deltaTime * 2;
+            transform.localScale = Vector3.Lerp(new Vector3(0.3f,0.3f,0.3f), Vector3.zero, time);
+            yield return null;
+        }
+    }
+
+    public void UpdatePosition(Vector2 newPosition)
+    {
+        Debug.Log("Updating position to: " + newPosition.ToString());
+        transform.position = newPosition;
     }
 }

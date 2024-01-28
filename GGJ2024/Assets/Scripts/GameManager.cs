@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour
     private int curOvercharge = 0;
     private bool curSuspense = false;
 
+    [SerializeField] private Spawner spawnCrowdMember;
     private Dictionary<CardTypeEnum, GameObject> prefabMap;
 
     public static void Shuffle(List<Card> cardList) {
@@ -154,6 +155,11 @@ public class GameManager : MonoBehaviour
         UpdateTexts();
         StartTurn();
     }
+
+    public bool GetCanPlay(){
+        return canPlay;
+    }
+
     public void AddCardToBottomDeck(Card newCard){
         deck.Insert(0, newCard); 
     }
@@ -231,6 +237,14 @@ public class GameManager : MonoBehaviour
         int toDraw = startHandSize - hand.Count;
         if(toDraw < 0){toDraw=0;}
         StartCoroutine(DrawCards(toDraw));
+        //20% 3, 50% 2, 30% 1
+        List<int> numToSpawn = new List<int>(){1,1,1, 2,2,2,2,2, 3,3};
+        int index = UnityEngine.Random.Range(0, numToSpawn.Count);
+        for (int i = 0; i < numToSpawn[index]; i++)
+        {
+            spawnCrowdMember.Spawn();
+        }
+
     }
 
     public void DiscardRandomCards(int numToDiscard){
@@ -446,8 +460,14 @@ public class GameManager : MonoBehaviour
     }
 
     public void EndTurn(){
+
         if(eventManager.gameState == EventManager.GameState.Round){
             //refresh energy
+            List<CrowdMember> cms = FindObjectsOfType<CrowdMember>().ToList();
+            foreach (CrowdMember cm in cms)
+            {
+                cm.TakeDamage(-2, CardTypeEnum.None);
+            }
             curOvercharge = 0;
             curEnergy += 3;
             UpdateTexts();
