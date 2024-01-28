@@ -103,10 +103,10 @@ public class CardDisplay : MonoBehaviour
     }
 
     private void OnMouseDown() {
-        if(playingCard && cardNature == CardNature.Playable){
+        if(cardNature == CardNature.Playable){
             gameManager.SetCardCanMove(false, listPos);
+            movingTowardsMouse = true;
         }
-        movingTowardsMouse = true;
     }
 
     private void OnMouseUp() {
@@ -122,13 +122,13 @@ public class CardDisplay : MonoBehaviour
 
     private void OnMouseExit() {
         glow.SetActive(false);
-        if(cardNature == CardNature.Playable){
-        gameManager.SetCardCanMove(true, listPos);
-
+        if(cardNature == CardNature.Playable)
+        {
+            gameManager.SetCardCanMove(true, listPos);
+        }
         gameObject.GetComponent<Canvas>().sortingOrder = 0;
         gameObject.GetComponent<Canvas>().overrideSorting = false;
         gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x - 0.005f, gameObject.transform.localScale.y - 0.005f, gameObject.transform.localScale.z - 0.005f);
-        }
     }
 
     public AudioClip ReturnAudioClip(){

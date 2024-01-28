@@ -146,10 +146,11 @@ public class GameManager : MonoBehaviour
     }
 
     public void StartRound(){
-        RegenerateDeck();
-        curEmotion      = 0;
-        curOvercharge   = 0;
-        curEnergy       = 3;
+        //Set up for new set/round
+        Shuffle(deck);
+        curEnergy = 3;
+        curOvercharge = 0;
+        curEmotion = 0;
         UpdateTexts();
         StartTurn();
     }

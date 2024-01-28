@@ -67,6 +67,7 @@ public class EventManager : MonoBehaviour
         }
         else if (gameState == GameState.Round)
         {
+            gameManager.RegenerateDeck();
             mainOptionCanvas.SetActive(true);
             gameState = GameState.CardAdd;
             OfferCards(Resources.LoadAll<Card>("Cards"));
