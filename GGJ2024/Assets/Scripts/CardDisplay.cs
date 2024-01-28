@@ -45,7 +45,7 @@ public class CardDisplay : MonoBehaviour
             gameObject.transform.position = newPos;
         }
     }
-    public void setUpCardShop(EventManager em, int index)
+    public void setUpCardShop(EventManager em, int index, GameManager gameMan)
     {
         //set actual ui objects
         descriptionText     = gameObject.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>();
@@ -55,6 +55,7 @@ public class CardDisplay : MonoBehaviour
         glow                = gameObject.transform.Find("Glow").gameObject;
         crowdworkImg        = gameObject.transform.Find("CrowdworkImg").gameObject;
 
+        gameManager = gameMan;
         crowdworkImg.SetActive(card.isCrowdwork);
 
         //set visual card values

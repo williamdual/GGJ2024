@@ -15,7 +15,7 @@ MonoBehaviour:
   description: I just got an inexpensive circumcision, it was a rip off ~COSTS 1
     Emotion, ENTERS Suspense~
   isCrowdwork: 0
-  cardType: 0
+  cardType: 4
   artwork: {fileID: 21300000, guid: 38748cd826e8b4b759cdd158371cf7a5, type: 3}
   energyCost: 1
   funnyValue: 0

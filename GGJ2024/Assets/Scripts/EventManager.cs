@@ -17,7 +17,7 @@ public class EventManager : MonoBehaviour
     public int numOfCardsToOffer = 3; //Never go above 5
     List<Card> cardsToOffer = new List<Card>();
     List<int> selectedCardIndexes = new List<int>();
-    public int numOfCardsToAccept = 2;
+    public int numOfCardsToAccept = 1;
     int numOfCardsLeft = 0;
     public List<Transform> shopPositions;
 
@@ -143,7 +143,7 @@ public class EventManager : MonoBehaviour
             //spawn in new card, add it to list so it moves to where it's supposed to go
             GameObject newCard = Instantiate(cardPrefab, shopPositions[i].position, Quaternion.identity, mainOptionCanvas.transform);
             newCard.gameObject.GetComponent<CardDisplay>().card = cardsToOffer[i];
-            newCard.gameObject.GetComponent<CardDisplay>().setUpCardShop(this, i);
+            newCard.gameObject.GetComponent<CardDisplay>().setUpCardShop(this, i, gameManager);
         }
     }
     public void selectCard(int listPos)

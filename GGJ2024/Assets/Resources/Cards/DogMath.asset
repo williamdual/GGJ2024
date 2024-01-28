@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: I asked my dog what 2 minus 2 is, he said nothing ~GRANTS 1 Emotion~
   isCrowdwork: 0
-  cardType: 0
+  cardType: 2
   artwork: {fileID: 21300000, guid: e75afdc56f0b749d7be7df2687e89063, type: 3}
   energyCost: 1
   funnyValue: 2

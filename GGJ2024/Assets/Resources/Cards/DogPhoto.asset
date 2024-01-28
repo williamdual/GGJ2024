@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: '*Pull out a photo of your dog ~GRANTS 2 Energy~'
   isCrowdwork: 1
-  cardType: 0
+  cardType: 2
   artwork: {fileID: 21300000, guid: d560e22032235438bb1ce1cf535647da, type: 3}
   energyCost: 0
   funnyValue: 0

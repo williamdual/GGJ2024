@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Love is not having to hold your farts in ~COSTS 1 Emotion~
   isCrowdwork: 0
-  cardType: 0
+  cardType: 3
   artwork: {fileID: 21300000, guid: d2a175071435d4ce79c203570512b572, type: 3}
   energyCost: 2
   funnyValue: 3

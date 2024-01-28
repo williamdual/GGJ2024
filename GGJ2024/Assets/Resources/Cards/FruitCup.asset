@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: '*Wordlessly devour an entire fruit cup ~GRANTS 1 HP~'
   isCrowdwork: 1
-  cardType: 0
+  cardType: 5
   artwork: {fileID: 21300000, guid: 3ca8df9eeb9414f0f83aa5adbcbefc1a, type: 3}
   energyCost: 5
   funnyValue: 0

@@ -11,7 +11,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    private int numHappyThreshold = 4;
+
+    private GameObject tutPopup;
+    private int numHappyThreshold = 1;
     private List<Card> stalePile;
     private EventManager eventManager;
 
@@ -112,7 +114,8 @@ public class GameManager : MonoBehaviour
         suspenseObj     = cardCanvas.gameObject.transform.Find("Suspense").gameObject;
         gameOverObj     = cardCanvas.gameObject.transform.Find("GameOver").gameObject;
         gameOverText    = cardCanvas.gameObject.transform.Find("GameOver/GameOverText").gameObject.GetComponent<TextMeshProUGUI>();
-
+        tutPopup        = cardCanvas.gameObject.transform.Find("Tutorial").gameObject;
+        
         //init bool array
         moveCardObjects = new bool[maxHandSize];
         for(int i = 0; i < maxHandSize; i++){
@@ -160,6 +163,10 @@ public class GameManager : MonoBehaviour
             numHappyThreshold = numHappyThreshold + numHappyThreshold + 1;
             eventManager.cycleState();
         }
+    }
+
+    public void EndTut(){
+        tutPopup.SetActive(false);
     }
 
     public void StartRound(){
@@ -374,6 +381,7 @@ public class GameManager : MonoBehaviour
         if(canPlay){
             GameObject cardObj      = handCardObjects[listIndex];
             CardDisplay cardScript  = cardObj.GetComponent<CardDisplay>();
+            Card cardToAdd = hand[listIndex];
 
             if(cardScript.card.costEmotion > curEmotion || cardScript.card.energyCost > curEnergy + curOvercharge){
                 //bad sound (didn't play the card due to not enough resources)
@@ -419,7 +427,6 @@ public class GameManager : MonoBehaviour
             //good sound (played the card)
             AudioSource.PlayClipAtPoint(cardScript.ReturnAudioClip(), Vector3.zero);
 
-            Card cardToAdd = hand[listIndex];
             
             DiscardCardAtIndex(listIndex, false);
             

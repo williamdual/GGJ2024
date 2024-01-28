@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: This next one's gonna kill you ~ENTERS Suspense~
   isCrowdwork: 1
-  cardType: 0
+  cardType: 1
   artwork: {fileID: 21300000, guid: 295083372146647e5a89ef74d80404c1, type: 3}
   energyCost: 2
   funnyValue: 0
