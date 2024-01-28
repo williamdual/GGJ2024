@@ -12,11 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecd81a036a2a7438db6fe8c4d2e04f91, type: 3}
   m_Name: HonkHonk
   m_EditorClassIdentifier: 
-  cardName: Honk Honk
   description: Take out your trusty honk and honk some honks.
-  cardType: 0
+  isCrowdwork: 0
+  cardType: 5
   artwork: {fileID: 21300000, guid: 388a6c4c9604e4ce1b53e9e959553926, type: 3}
   energyCost: 0
-  healthCost: 0
   funnyValue: 1
+  minFunnyValuePercentRange: 100
+  maxFunnyValuePercentRange: 100
+  healthCost: 0
+  percentChanceToTakeLessHP: 0
+  luckyHealthCost: 0
   audioClip: {fileID: 8300000, guid: 796cec796e8ac4da4a1ff338396fb73c, type: 3}
+  costEmotion: 0
+  addOvercharge: 0
+  addEnergy: 0
+  addEmotion: 0
+  addHealth: 0
+  stale: 0
+  drawFromDiscard: 0
+  drawRandomFromDiscard: 0
+  discardRandomCards: 0
+  endTurnOnDiscardFailure: 0
+  entersSuspense: 0
+  endTurnIfNotSuspense: 0

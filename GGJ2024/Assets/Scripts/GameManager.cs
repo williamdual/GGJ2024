@@ -20,14 +20,14 @@ public class GameManager : MonoBehaviour
     //IMPORTANT: the top of the 'deck' will be the last element in the lists, since popping from back
     //of a list is way more efficient
 
-    private Card[] cardLibrary;
+    private Dictionary<String, Card> cardLibrary;
     public Canvas cardCanvas;
     public GameObject cornyPrefab;
     public GameObject familyPrefab;
     public GameObject darkPrefab;
     public GameObject animalsPrefab;
     public GameObject romancePrefab;
-    public GameObject depricatingPrefab;
+    public GameObject deprecatingPrefab;
     public GameObject propPrefab;
     public int maxHandSize   = 8;
     public int startHandSize = 5;
@@ -35,6 +35,12 @@ public class GameManager : MonoBehaviour
 
     //should be size of maxHandSize
     public Transform[] cardPositions;
+
+    private TextMeshProUGUI energyText;
+    private TextMeshProUGUI healthText;
+    private TextMeshProUGUI emotionText;
+    private TextMeshProUGUI suspenseText;
+    private TextMeshProUGUI overchargeText;
 
     private List<Card> deck;
 
@@ -49,7 +55,7 @@ public class GameManager : MonoBehaviour
     private bool canPlay;
 
     private int maxEnergy = 20;
-    private int curEnergy;
+    private int curEnergy = 10;
     private int maxHealth = 100;
     private int curHealth;
     private int curEmotion = 0;
@@ -78,11 +84,16 @@ public class GameManager : MonoBehaviour
         {CardTypeEnum.Dark, darkPrefab},
         {CardTypeEnum.Animals, animalsPrefab},
         {CardTypeEnum.Romance, romancePrefab},
-        {CardTypeEnum.Depricating, depricatingPrefab},
+        {CardTypeEnum.Deprecating, deprecatingPrefab},
         {CardTypeEnum.Prop, propPrefab},
         {CardTypeEnum.Corny, cornyPrefab}};
 
-        cardLibrary = Resources.LoadAll<Card>("Cards");
+        cardLibrary = new Dictionary<string, Card>();
+
+        Card[] cardArr = Resources.LoadAll<Card>("Cards");
+        for(int i = 0; i < cardArr.Length; i++){
+            cardLibrary.Add(cardArr[i].name, cardArr[i]);
+        }
 
         deck            = new List<Card>();
         discard         = new List<Card>();
@@ -90,6 +101,11 @@ public class GameManager : MonoBehaviour
         handCardObjects = new List<GameObject>();
         deckText        = cardCanvas.gameObject.transform.Find("Deck/DeckText").GetComponent<TextMeshProUGUI>();
         discardText     = cardCanvas.gameObject.transform.Find("Discard/DiscardText").GetComponent<TextMeshProUGUI>();
+        energyText      = cardCanvas.gameObject.transform.Find("Energy/EnergyText").GetComponent<TextMeshProUGUI>();
+        healthText      = cardCanvas.gameObject.transform.Find("Health/HealthText").GetComponent<TextMeshProUGUI>();
+        emotionText     = cardCanvas.gameObject.transform.Find("Emotion/EmotionText").GetComponent<TextMeshProUGUI>();
+        suspenseText    = cardCanvas.gameObject.transform.Find("Suspense/SuspenseText").GetComponent<TextMeshProUGUI>();
+        overchargeText  = cardCanvas.gameObject.transform.Find("Overcharge/OverchargeText").GetComponent<TextMeshProUGUI>();
 
         //init bool array
         moveCardObjects = new bool[maxHandSize];
@@ -102,23 +118,26 @@ public class GameManager : MonoBehaviour
     }
 
     public void AddCardToBottomDeck(Card newCard){
-        Debug.Log("Adding card to bottom of deck: " + newCard.cardName);
         deck.Insert(0, newCard); 
     }
 
     public void AddCardToTopDeck(Card newCard){
-        Debug.Log("Adding card to top of deck: " + newCard.cardName);
         deck.Insert(deck.Count, newCard); 
     }
 
     public void AddCardToDiscard(Card newCard){
-        Debug.Log("Adding card to discard: " + newCard.cardName);
         discard.Insert(discard.Count, newCard); 
     }
 
     public void UpdateTexts(){
-        discardText.text = "Discard: " + discard.Count.ToString();
-        deckText.text    = "Deck: " + deck.Count.ToString();
+        discardText.text   = "Discard: " + discard.Count.ToString();
+        deckText.text      = "Deck: " + deck.Count.ToString();
+
+        energyText.text    = "Energy: " + curEnergy.ToString();
+        healthText.text    = "Health: " + curHealth.ToString();
+        emotionText.text   = "Emotion: " + curEmotion.ToString();
+        suspenseText.text  = "Suspense: " + curSuspense.ToString();
+        overchargeText.text  = "Overcharge: " + curOvercharge.ToString();
     }
 
     // Update is called once per frame
@@ -148,10 +167,13 @@ public class GameManager : MonoBehaviour
     }
 
     private void InitDeck(){
-        for(int i = 0; i < 3; i++){
-            AddCardToTopDeck(cardLibrary[i]);
-            AddCardToTopDeck(cardLibrary[i]);
-        }
+        AddCardToTopDeck(cardLibrary["KnockKnock"]);
+        AddCardToTopDeck(cardLibrary["HonkHonk"]);
+        AddCardToTopDeck(cardLibrary["EvilStairs"]);
+        AddCardToTopDeck(cardLibrary["StrikeOut"]);
+        AddCardToTopDeck(cardLibrary["Noise"]);
+        AddCardToTopDeck(cardLibrary["DogMath"]);
+        GameManager.Shuffle(deck);
     }
 
     public void StartTurn(){
@@ -201,6 +223,7 @@ public class GameManager : MonoBehaviour
 
         for(int i = startSize; i < hand.Count; i++){
             GameObject cardPrefab = prefabMap[hand[i].cardType];
+            Debug.Log("CARD PREFAB: " + cardPrefab.name);
             //spawn in new card, add it to list so it moves to where it's supposed to go
             GameObject newCard = Instantiate(cardPrefab, deckPosition.position, Quaternion.identity, cardCanvas.transform);
             newCard.gameObject.GetComponent<CardDisplay>().card = hand[i];
@@ -332,6 +355,9 @@ public class GameManager : MonoBehaviour
         if(!curSuspense && card.card.endTurnIfNotSuspense){
             autoEndTurn = true;
         }
+        if(card.card.endsTurn){
+            autoEndTurn = true;
+        }
         if(card.card.entersSuspense){
             curSuspense = true;
         }
@@ -346,6 +372,11 @@ public class GameManager : MonoBehaviour
     public void EndTurn(){
         //refresh energy
         curOvercharge = 0;
+        curEnergy += 3;
+        if(curEnergy > maxEnergy){
+            curEnergy=maxEnergy;
+        }
+        UpdateTexts();
         StartTurn();
     }
 }

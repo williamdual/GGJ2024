@@ -9,10 +9,10 @@ public class CrowdMember : MonoBehaviour
 {
     private Dictionary<CardTypeEnum, CardTypeEnum[]> dislikes = new Dictionary<CardTypeEnum, CardTypeEnum[]>(){
     {CardTypeEnum.Family, new CardTypeEnum[] {CardTypeEnum.Dark}},
-    {CardTypeEnum.Dark, new CardTypeEnum[] {CardTypeEnum.Family, CardTypeEnum.Animals, CardTypeEnum.Romance, CardTypeEnum.Depricating, CardTypeEnum.Prop, CardTypeEnum.Corny}},
-    {CardTypeEnum.Animals, new CardTypeEnum[] {CardTypeEnum.Romance, CardTypeEnum.Depricating}},
-    {CardTypeEnum.Romance, new CardTypeEnum[] {CardTypeEnum.Depricating, CardTypeEnum.Dark}},
-    {CardTypeEnum.Depricating, new CardTypeEnum[] {CardTypeEnum.Family, CardTypeEnum.Animals}},
+    {CardTypeEnum.Dark, new CardTypeEnum[] {CardTypeEnum.Family, CardTypeEnum.Animals, CardTypeEnum.Romance, CardTypeEnum.Deprecating, CardTypeEnum.Prop, CardTypeEnum.Corny}},
+    {CardTypeEnum.Animals, new CardTypeEnum[] {CardTypeEnum.Romance, CardTypeEnum.Deprecating}},
+    {CardTypeEnum.Romance, new CardTypeEnum[] {CardTypeEnum.Deprecating, CardTypeEnum.Dark}},
+    {CardTypeEnum.Deprecating, new CardTypeEnum[] {CardTypeEnum.Family, CardTypeEnum.Animals}},
     {CardTypeEnum.Prop, new CardTypeEnum[] {CardTypeEnum.None}},
     {CardTypeEnum.Corny, new CardTypeEnum[] {CardTypeEnum.None}}};
 

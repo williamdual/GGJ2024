@@ -8,16 +8,13 @@ using UnityEngine.UI;
 public class CardDisplay : MonoBehaviour
 {
     public Card card;
-
-    private TextMeshProUGUI nameText;
     private TextMeshProUGUI descriptionText;
 
     private Image artImg;
 
     private TextMeshProUGUI energyText;
     private TextMeshProUGUI healthText;
-    private TextMeshProUGUI funnyText;
-    private TextMeshProUGUI typeText;
+    private GameObject crowdworkImg;
     
     private GameObject glow;
 
@@ -43,23 +40,20 @@ public class CardDisplay : MonoBehaviour
     public void SetupFromCard(GameManager gameMan, int index){
         Debug.Log("Setting up from card: " + card.name);
         //set actual ui objects
-        nameText            = gameObject.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
         descriptionText     = gameObject.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>();
-        energyText          = gameObject.transform.Find("EnergyImg/EnergyText").GetComponent<TextMeshProUGUI>();
-        healthText          = gameObject.transform.Find("HealthImg/HealthText").GetComponent<TextMeshProUGUI>();
-        funnyText           = gameObject.transform.Find("FunnyImg/FunnyText").GetComponent<TextMeshProUGUI>();
-        typeText            = gameObject.transform.Find("TypeImg/TypeText").GetComponent<TextMeshProUGUI>();
+        energyText          = gameObject.transform.Find("EnergyText").GetComponent<TextMeshProUGUI>();
+        healthText          = gameObject.transform.Find("HealthText").GetComponent<TextMeshProUGUI>();
         artImg              = gameObject.transform.Find("CardArt").GetComponent<Image>();
         glow                = gameObject.transform.Find("Glow").gameObject;
+        crowdworkImg        = gameObject.transform.Find("CrowdworkImg").gameObject;
+
+        crowdworkImg.SetActive(card.isCrowdwork);
 
         //set visual card values
-        nameText.text           = card.cardName;
         descriptionText.text    = card.description;
         artImg.sprite           = card.artwork;
         energyText.text         = card.energyCost.ToString();
         healthText.text         = card.healthCost.ToString();
-        funnyText.text          = card.funnyValue.ToString();
-        typeText.text           = card.cardType.ToString();
         gameManager             = gameMan;
         listPos                 = index;
     }

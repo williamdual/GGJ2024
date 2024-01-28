@@ -6,7 +6,6 @@ using UnityEngine;
 public class Card : ScriptableObject {
 
     [Header("Normal Attributes")]
-    public string cardName;
     public string description;
     public bool isCrowdwork;
 
@@ -15,8 +14,8 @@ public class Card : ScriptableObject {
 
     public int energyCost = 0;
     public int funnyValue = 0;
-    public float minFunnyValuePercentRange = 0;
-    public float maxFunnyValuePercentRange = 0;
+    public float minFunnyValuePercentRange = 100.0f;
+    public float maxFunnyValuePercentRange = 100.0f;
 
     public int healthCost = 0;
     public float percentChanceToTakeLessHP = 0;
@@ -43,5 +42,6 @@ public class Card : ScriptableObject {
 
     public bool entersSuspense = false;
     public bool endTurnIfNotSuspense = false;
+    public bool endsTurn = false;
 
 }
