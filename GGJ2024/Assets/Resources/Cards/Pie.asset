@@ -23,7 +23,7 @@ MonoBehaviour:
   healthCost: 2
   percentChanceToTakeLessHP: 0
   luckyHealthCost: 0
-  audioClip: {fileID: 8300000, guid: 796cec796e8ac4da4a1ff338396fb73c, type: 3}
+  audioClip: {fileID: 8300000, guid: 1c73302ce3378304f980f46d1744d1ef, type: 3}
   costEmotion: 0
   addOvercharge: 0
   addEnergy: 0

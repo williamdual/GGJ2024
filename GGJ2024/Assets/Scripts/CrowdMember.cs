@@ -14,13 +14,24 @@ using UnityEngine.UIElements;
     Sad,
     Angry
 }
+
+
 public class CrowdMember : MonoBehaviour 
 {
+    public static List<String> AngrySounds      = new List<String>() {"Mad1"};
+    public static List<String> SadSounds        = new List<String>() {"KindaMad1"};
+    public static List<String> NeutralSounds    = new List<String>() {"Neutral1"};
+    public static List<String> HappySounds      = new List<String>() {"KindaHappy1"};
+    public static List<String> EcstaticSounds   = new List<String>() {"Happy1"};
+    
 
     const int minFont = 12;
     const int maxFont = 20;
     private List<String> happyQuotes;
     private List<String> sadQuotes;
+
+    private SoundManager soundManager;
+    private GameManager gameManager;
 
     private float ecstaticThreshold = 0.80f;
     private float happyThreshold    = 0.60f;
@@ -41,8 +52,8 @@ public class CrowdMember : MonoBehaviour
     {CardTypeEnum.Animals, new CardTypeEnum[] {CardTypeEnum.Romance, CardTypeEnum.Deprecating}},
     {CardTypeEnum.Romance, new CardTypeEnum[] {CardTypeEnum.Deprecating, CardTypeEnum.Dark}},
     {CardTypeEnum.Deprecating, new CardTypeEnum[] {CardTypeEnum.Family, CardTypeEnum.Animals}},
-    {CardTypeEnum.Prop, new CardTypeEnum[] {CardTypeEnum.None}},
-    {CardTypeEnum.Corny, new CardTypeEnum[] {CardTypeEnum.None}}};
+    {CardTypeEnum.Prop, new CardTypeEnum[] {CardTypeEnum.Corny}},
+    {CardTypeEnum.Corny, new CardTypeEnum[] {CardTypeEnum.Prop}}};
 
     public float speed = 1.0f;
     public float size; 
@@ -62,6 +73,9 @@ public class CrowdMember : MonoBehaviour
         happyQuotes = new List<String>();
         sadQuotes   = new List<String>();
 
+        soundManager = GameObject.FindWithTag("GameManager").gameObject.GetComponent<SoundManager>();
+        gameManager  = GameObject.FindWithTag("GameManager").gameObject.GetComponent<GameManager>();
+
         happyQuotes.Add(" Ha\nHa!");
         happyQuotes.Add("Good one!");
         happyQuotes.Add("I pissed my pants!");
@@ -71,6 +85,13 @@ public class CrowdMember : MonoBehaviour
         happyQuotes.Add("Good joke buddy!");
         happyQuotes.Add("I hear ya!");
         happyQuotes.Add("You on a roll!");
+        happyQuotes.Add("Marry me!");
+        happyQuotes.Add("The clown is funny!");
+        happyQuotes.Add("HARDY! HAR! HAR!");
+        happyQuotes.Add("You on a rolling wheel!");
+        happyQuotes.Add("Spin me right round!");
+        happyQuotes.Add("My teeth are out!");
+        happyQuotes.Add("What a funny goof!");
 
         sadQuotes.Add("Boooo!");
         sadQuotes.Add("You suck!");
@@ -80,7 +101,14 @@ public class CrowdMember : MonoBehaviour
         sadQuotes.Add("Get a new joke book...");
         sadQuotes.Add("I'm 'bouta puke");
         sadQuotes.Add("*YAWN*");
-
+        sadQuotes.Add("I'm crying. Of Boredom.");
+        sadQuotes.Add("Let's get outta here.");
+        sadQuotes.Add("SO. BORING.");
+        sadQuotes.Add("I'd rather die.");
+        sadQuotes.Add("Screw this...");
+        sadQuotes.Add("Blablabla...");
+        sadQuotes.Add("Funerals are funnier.");
+        
         GameObject confettiObj = Instantiate(confetti.gameObject, new Vector3(transform.position.x, transform.position.y - 0.2f, transform.position.z),  Quaternion.identity);
 
         happyTextPrefab = (GameObject)Resources.Load("Prefabs/HappyText");
@@ -190,6 +218,7 @@ public class CrowdMember : MonoBehaviour
 
     public void BadLeave(){
         Debug.Log("A crowd member has badly left.");
+        gameManager.TakeDamage(1);
         GameObject confettiObj = Instantiate(sadParticles.gameObject, transform.position, Quaternion.identity);
         StartCoroutine(BlipOut());
         Destroy(gameObject);
@@ -197,6 +226,7 @@ public class CrowdMember : MonoBehaviour
 
     public void GoodLeave(){
         Debug.Log("A crowd member has well left.");
+        gameManager.AddPeopleHappy(1);
         GameObject confettiObj = Instantiate(confetti.gameObject, transform.position, Quaternion.identity);
         StartCoroutine(BlipOut());
         Destroy(gameObject);
@@ -205,6 +235,8 @@ public class CrowdMember : MonoBehaviour
 
 
     public void BeEcstatic(){
+        int randInd = UnityEngine.Random.Range(0, EcstaticSounds.Count);
+        soundManager.PlaySound(EcstaticSounds[randInd]);
         GameObject body = transform.Find("Body").gameObject;
         body.GetComponent<SpriteRenderer>().sprite = faces[0];
         Animator anim = transform.Find("ArmsParent").GetComponent<Animator>();
@@ -215,6 +247,8 @@ public class CrowdMember : MonoBehaviour
     }
 
     public void BeHappy(){
+        int randInd = UnityEngine.Random.Range(0, HappySounds.Count);
+        soundManager.PlaySound(HappySounds[randInd]);
         GameObject body = transform.Find("Body").gameObject;
         body.GetComponent<SpriteRenderer>().sprite = faces[1];
         Animator anim = transform.Find("ArmsParent").GetComponent<Animator>();
@@ -225,6 +259,8 @@ public class CrowdMember : MonoBehaviour
     }
 
     public void BeNeutral(){
+        int randInd = UnityEngine.Random.Range(0, NeutralSounds.Count);
+        soundManager.PlaySound(NeutralSounds[randInd]);
         GameObject body = transform.Find("Body").gameObject;
         body.GetComponent<SpriteRenderer>().sprite = faces[2];
         Animator anim = transform.Find("ArmsParent").GetComponent<Animator>();
@@ -234,6 +270,8 @@ public class CrowdMember : MonoBehaviour
     }
 
     public void BeSad(){
+        int randInd = UnityEngine.Random.Range(0, SadSounds.Count);
+        soundManager.PlaySound(SadSounds[randInd]);
         GameObject body = transform.Find("Body").gameObject;
         body.GetComponent<SpriteRenderer>().sprite = faces[3];
         Animator anim = transform.Find("ArmsParent").GetComponent<Animator>();
@@ -244,6 +282,8 @@ public class CrowdMember : MonoBehaviour
     }
 
     public void BeAngry(){
+        int randInd = UnityEngine.Random.Range(0, AngrySounds.Count);
+        soundManager.PlaySound(AngrySounds[randInd]);
         GameObject body = transform.Find("Body").gameObject;
         body.GetComponent<SpriteRenderer>().sprite = faces[4];
         Animator anim = transform.Find("ArmsParent").GetComponent<Animator>();

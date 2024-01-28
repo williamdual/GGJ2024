@@ -7,11 +7,16 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     private List<Card> stalePile;
     private EventManager eventManager;
+
+    private GameObject gameOverObj;
+    private TextMeshProUGUI gameOverText;
+    private int peopleHappy = 0;
     private float CARD_DRAW_SPEED           = 12.0f;
 
     private float SLOW_DOWN_DIST            = 5.0f;
@@ -104,6 +109,8 @@ public class GameManager : MonoBehaviour
         emotionText     = cardCanvas.gameObject.transform.Find("Emotion/EmotionText").GetComponent<TextMeshProUGUI>();
         overchargeText  = cardCanvas.gameObject.transform.Find("Overcharge/OverchargeText").GetComponent<TextMeshProUGUI>();
         suspenseObj     = cardCanvas.gameObject.transform.Find("Suspense").gameObject;
+        gameOverObj     = cardCanvas.gameObject.transform.Find("GameOver").gameObject;
+        gameOverText    = cardCanvas.gameObject.transform.Find("GameOver/GameOverText").gameObject.GetComponent<TextMeshProUGUI>();
 
         //init bool array
         moveCardObjects = new bool[maxHandSize];
@@ -144,6 +151,10 @@ public class GameManager : MonoBehaviour
         stalePile.Clear();
 
         Shuffle(deck);
+    }
+
+    public void AddPeopleHappy(int num){
+        peopleHappy += num;
     }
 
     public void StartRound(){
@@ -436,8 +447,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void Restart(){
+        String currentSceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(currentSceneName);
+    }
+
     private void GameOver(){
         Debug.Log("GAME OVER!");
+        gameOverObj.SetActive(true);
+        gameOverText.text = peopleHappy.ToString();
     }
 
     private bool DoCardEffects(CardDisplay card){

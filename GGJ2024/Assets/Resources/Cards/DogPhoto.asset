@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: '*Pull out a photo of your dog ~GRANTS 2 Energy~'
   isCrowdwork: 1
-  cardType: 2
+  cardType: 0
   artwork: {fileID: 21300000, guid: d560e22032235438bb1ce1cf535647da, type: 3}
   energyCost: 0
   funnyValue: 0
@@ -23,7 +23,7 @@ MonoBehaviour:
   healthCost: 0
   percentChanceToTakeLessHP: 0
   luckyHealthCost: 0
-  audioClip: {fileID: 8300000, guid: 796cec796e8ac4da4a1ff338396fb73c, type: 3}
+  audioClip: {fileID: 8300000, guid: 20a5d627ea5dd8a4b9110dc29ab15f16, type: 3}
   costEmotion: 0
   addOvercharge: 0
   addEnergy: 1

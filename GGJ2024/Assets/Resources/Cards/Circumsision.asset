@@ -15,7 +15,7 @@ MonoBehaviour:
   description: I just got an inexpensive circumcision, it was a rip off ~COSTS 1
     Emotion, ENTERS Suspense~
   isCrowdwork: 0
-  cardType: 4
+  cardType: 0
   artwork: {fileID: 21300000, guid: 38748cd826e8b4b759cdd158371cf7a5, type: 3}
   energyCost: 1
   funnyValue: 0
@@ -24,7 +24,7 @@ MonoBehaviour:
   healthCost: 0
   percentChanceToTakeLessHP: 0
   luckyHealthCost: 0
-  audioClip: {fileID: 8300000, guid: 796cec796e8ac4da4a1ff338396fb73c, type: 3}
+  audioClip: {fileID: 8300000, guid: 20a5d627ea5dd8a4b9110dc29ab15f16, type: 3}
   costEmotion: 1
   addOvercharge: 0
   addEnergy: 0
