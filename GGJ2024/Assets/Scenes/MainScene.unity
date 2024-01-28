@@ -1080,6 +1080,7 @@ GameObject:
   - component: {fileID: 298903159}
   - component: {fileID: 298903158}
   - component: {fileID: 298903160}
+  - component: {fileID: 298903161}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1160,6 +1161,18 @@ MonoBehaviour:
   - {fileID: 1135043330}
   gameState: 0
   cardCanvas: {fileID: 0}
+--- !u!114 &298903161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298903157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2af73583485144a299e51a9be4322db5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &311068240
 GameObject:
   m_ObjectHideFlags: 0
@@ -3909,7 +3922,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.603558}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -3920,7 +3933,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 18, y: 3.5}
+  m_Size: {x: 18, y: 4.707116}
   m_EdgeRadius: 0
 --- !u!50 &1691411258
 Rigidbody2D:

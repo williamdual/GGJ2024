@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GaryAlcoholic
   m_EditorClassIdentifier: 
   description: "Hello, I\u2019m Gary and I\u2019m an alcoholic\u2026 Oh, wait! Wrong
-    speech! ~ DRAW 2 From Discard ~"
+    speech! ~DRAW 2 From Discard~"
   isCrowdwork: 1
   cardType: 4
   artwork: {fileID: 21300000, guid: 667b260c5614149eea018e7383f622d9, type: 3}

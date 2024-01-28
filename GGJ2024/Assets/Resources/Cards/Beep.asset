@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Beep
   m_EditorClassIdentifier: 
   description: I thought my friend said his sign was cancer but I couldn't quite
-    hear him over the beep ~ DISCARD 2 Random or Ends Turn ~
+    hear him over the beep ~DISCARD 2 Random or Ends Turn~
   isCrowdwork: 0
   cardType: 1
   artwork: {fileID: 21300000, guid: 667b260c5614149eea018e7383f622d9, type: 3}
