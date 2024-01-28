@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c2ed2a3a681a184ea076168114a2a64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currMood: 4
+  currMood: 2
   textPrefab: {fileID: 8901807985393430425, guid: 39da1c6dc2645488b9757b12b023c3e8, type: 3}
   confetti: {fileID: 8921144164298520146, guid: 5c93f88d36e3ad94b9e35931c87a1bc8, type: 3}
   faces:
@@ -117,6 +117,7 @@ MonoBehaviour:
   size: 0
   type: 0
   maxFunny: 20
+  curFunny: 10
 --- !u!1 &7343103144233671550
 GameObject:
   m_ObjectHideFlags: 0
