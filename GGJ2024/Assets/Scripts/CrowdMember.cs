@@ -11,6 +11,7 @@ public class CrowdMember : MonoBehaviour
 
     public float health; 
 
+    
     void Update()
     { 
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, Time.deltaTime * speed );
