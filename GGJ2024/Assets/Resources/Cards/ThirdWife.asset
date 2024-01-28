@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecd81a036a2a7438db6fe8c4d2e04f91, type: 3}
   m_Name: ThirdWife
   m_EditorClassIdentifier: 
-  description: Who here is also on their 3rd wife? ~ GRANTS 3 Emotion ~
+  description: Who here is also on their 3rd wife? ~GRANTS 3 Emotion~
   isCrowdwork: 1
   cardType: 3
   artwork: {fileID: 21300000, guid: 667b260c5614149eea018e7383f622d9, type: 3}
