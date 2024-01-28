@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private EventManager eventManager = new EventManager();
     private float CARD_DRAW_SPEED           = 12.0f;
 
     private float SLOW_DOWN_DIST            = 5.0f;
@@ -19,15 +21,27 @@ public class GameManager : MonoBehaviour
     //IMPORTANT: the top of the 'deck' will be the last element in the lists, since popping from back
     //of a list is way more efficient
 
-    private Card[] cardLibrary;
+    private Dictionary<String, Card> cardLibrary;
     public Canvas cardCanvas;
-    public GameObject cardPrefab;
+    public GameObject cornyPrefab;
+    public GameObject familyPrefab;
+    public GameObject darkPrefab;
+    public GameObject animalsPrefab;
+    public GameObject romancePrefab;
+    public GameObject deprecatingPrefab;
+    public GameObject propPrefab;
     public int maxHandSize   = 8;
     public int startHandSize = 5;
     public Transform deckPosition;
 
     //should be size of maxHandSize
     public Transform[] cardPositions;
+
+    private TextMeshProUGUI energyText;
+    private TextMeshProUGUI healthText;
+    private TextMeshProUGUI emotionText;
+    private TextMeshProUGUI suspenseText;
+    private TextMeshProUGUI overchargeText;
 
     private List<Card> deck;
 
@@ -40,6 +54,16 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI discardText;
     private TextMeshProUGUI deckText;
     private bool canPlay;
+
+    private int maxEnergy = 20;
+    private int curEnergy = 10;
+    private int maxHealth = 100;
+    private int curHealth;
+    private int curEmotion = 0;
+    private int curOvercharge = 0;
+    private bool curSuspense = false;
+
+    private Dictionary<CardTypeEnum, GameObject> prefabMap;
 
     public static void Shuffle(List<Card> cardList) {
         int count   = cardList.Count;
@@ -56,7 +80,21 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cardLibrary = Resources.LoadAll<Card>("Cards");
+        prefabMap = new Dictionary<CardTypeEnum, GameObject>(){
+        {CardTypeEnum.Family, familyPrefab},
+        {CardTypeEnum.Dark, darkPrefab},
+        {CardTypeEnum.Animals, animalsPrefab},
+        {CardTypeEnum.Romance, romancePrefab},
+        {CardTypeEnum.Deprecating, deprecatingPrefab},
+        {CardTypeEnum.Prop, propPrefab},
+        {CardTypeEnum.Corny, cornyPrefab}};
+
+        cardLibrary = new Dictionary<string, Card>();
+
+        Card[] cardArr = Resources.LoadAll<Card>("Cards");
+        for(int i = 0; i < cardArr.Length; i++){
+            cardLibrary.Add(cardArr[i].name, cardArr[i]);
+        }
 
         deck            = new List<Card>();
         discard         = new List<Card>();
@@ -64,6 +102,11 @@ public class GameManager : MonoBehaviour
         handCardObjects = new List<GameObject>();
         deckText        = cardCanvas.gameObject.transform.Find("Deck/DeckText").GetComponent<TextMeshProUGUI>();
         discardText     = cardCanvas.gameObject.transform.Find("Discard/DiscardText").GetComponent<TextMeshProUGUI>();
+        energyText      = cardCanvas.gameObject.transform.Find("Energy/EnergyText").GetComponent<TextMeshProUGUI>();
+        healthText      = cardCanvas.gameObject.transform.Find("Health/HealthText").GetComponent<TextMeshProUGUI>();
+        emotionText     = cardCanvas.gameObject.transform.Find("Emotion/EmotionText").GetComponent<TextMeshProUGUI>();
+        suspenseText    = cardCanvas.gameObject.transform.Find("Suspense/SuspenseText").GetComponent<TextMeshProUGUI>();
+        overchargeText  = cardCanvas.gameObject.transform.Find("Overcharge/OverchargeText").GetComponent<TextMeshProUGUI>();
 
         //init bool array
         moveCardObjects = new bool[maxHandSize];
@@ -76,23 +119,26 @@ public class GameManager : MonoBehaviour
     }
 
     public void AddCardToBottomDeck(Card newCard){
-        Debug.Log("Adding card to bottom of deck: " + newCard.cardName);
         deck.Insert(0, newCard); 
     }
 
     public void AddCardToTopDeck(Card newCard){
-        Debug.Log("Adding card to top of deck: " + newCard.cardName);
         deck.Insert(deck.Count, newCard); 
     }
 
     public void AddCardToDiscard(Card newCard){
-        Debug.Log("Adding card to discard: " + newCard.cardName);
         discard.Insert(discard.Count, newCard); 
     }
 
     public void UpdateTexts(){
-        discardText.text = "Discard: " + discard.Count.ToString();
-        deckText.text    = "Deck: " + deck.Count.ToString();
+        discardText.text   = "Discard: " + discard.Count.ToString();
+        deckText.text      = "Deck: " + deck.Count.ToString();
+
+        energyText.text    = "Energy: " + curEnergy.ToString();
+        healthText.text    = "Health: " + curHealth.ToString();
+        emotionText.text   = "Emotion: " + curEmotion.ToString();
+        suspenseText.text  = "Suspense: " + curSuspense.ToString();
+        overchargeText.text  = "Overcharge: " + curOvercharge.ToString();
     }
 
     // Update is called once per frame
@@ -122,27 +168,63 @@ public class GameManager : MonoBehaviour
     }
 
     private void InitDeck(){
-        for(int i = 0; i < 3; i++){
-            AddCardToTopDeck(cardLibrary[i]);
-            AddCardToTopDeck(cardLibrary[i]);
-        }
+        AddCardToTopDeck(cardLibrary["KnockKnock"]);
+        AddCardToTopDeck(cardLibrary["HonkHonk"]);
+        AddCardToTopDeck(cardLibrary["EvilStairs"]);
+        AddCardToTopDeck(cardLibrary["StrikeOut"]);
+        AddCardToTopDeck(cardLibrary["Noise"]);
+        AddCardToTopDeck(cardLibrary["DogMath"]);
+        GameManager.Shuffle(deck);
     }
 
     public void StartTurn(){
         canPlay = false;
-        int startSize = hand.Count;
         int toDraw = startHandSize - hand.Count;
         if(toDraw < 0){toDraw=0;}
-        StartCoroutine(DrawCards(toDraw, startSize));
+        StartCoroutine(DrawCards(toDraw));
     }
 
-    public IEnumerator DrawCards(int numToDraw, int startSize){
+    public void DiscardRandomCards(int numToDiscard){
+        for(int i = 0; i < numToDiscard; i++){
+            if(hand.Count > 0){
+                int indexToRemove = UnityEngine.Random.Range(0, hand.Count);
+                DiscardCardAtIndex(indexToRemove, true);
+            }
+        }
+    }
+
+    public void DiscardCardAtIndex(int listIndex, bool putInDiscardPile){
+        Card cardToAdd = hand[listIndex];
+        hand.RemoveAt(listIndex);
+        handCardObjects.RemoveAt(listIndex);
+        
+        for(int i = listIndex; i < maxHandSize-1; i++){
+            moveCardObjects[i] = moveCardObjects[i+1];
+            if(i < handCardObjects.Count){
+                handCardObjects[i].GetComponent<CardDisplay>().SetListPos(i);
+            }
+        }
+
+        if(putInDiscardPile){
+            AddCardToDiscard(cardToAdd);
+        }
+    }
+
+    public IEnumerator DrawCards(int numToDraw, bool random=false, bool fromDiscard=false){
+        int startSize = hand.Count;
         for(int i = 0; i < numToDraw; i++){
-            _DrawCard();
+            if(fromDiscard){
+                _DrawCardFromDiscard(random);
+            }
+            else{
+                _DrawCardFromDeck(random);
+            }
             UpdateTexts();
         }
 
         for(int i = startSize; i < hand.Count; i++){
+            GameObject cardPrefab = prefabMap[hand[i].cardType];
+            Debug.Log("CARD PREFAB: " + cardPrefab.name);
             //spawn in new card, add it to list so it moves to where it's supposed to go
             GameObject newCard = Instantiate(cardPrefab, deckPosition.position, Quaternion.identity, cardCanvas.transform);
             newCard.gameObject.GetComponent<CardDisplay>().card = hand[i];
@@ -154,7 +236,24 @@ public class GameManager : MonoBehaviour
     }
 
     //should ONLY be called in DrawCards()
-    private void _DrawCard(){
+    private void _DrawCardFromDiscard(bool random=false){
+        //only draw if it won't exceed max
+        if(hand.Count < maxHandSize){
+            if(discard.Count == 0){return;}
+        
+            //draw
+            int toDrawIndex = discard.Count-1;
+            if(random){
+                toDrawIndex = UnityEngine.Random.Range(0, discard.Count);
+            }
+            hand.Add(discard[toDrawIndex]);
+            moveCardObjects[hand.Count-1] = true;
+            discard.RemoveAt(toDrawIndex);
+        }
+    }
+
+    //should ONLY be called in DrawCards()
+    private void _DrawCardFromDeck(bool random=false){
         //only draw if it won't exceed max
         if(hand.Count < maxHandSize){
             if(deck.Count == 0){
@@ -163,11 +262,14 @@ public class GameManager : MonoBehaviour
                     deck.Add(discard[i]);
                 }
                 discard.Clear();
-                GameManager.Shuffle(hand);
+                GameManager.Shuffle(deck);
             }
         
             //draw
             int toDrawIndex = deck.Count-1;
+            if(random){
+                toDrawIndex = UnityEngine.Random.Range(0, deck.Count);
+            }
             hand.Add(deck[toDrawIndex]);
             moveCardObjects[hand.Count-1] = true;
             deck.RemoveAt(toDrawIndex);
@@ -179,32 +281,103 @@ public class GameManager : MonoBehaviour
     }
 
     public void PlayCard(int listIndex){
-        //TODO: do effects, see if u have enough resources
+        //TODO: dont forget funny dmg (+ suspense), dont forget crowdwork effect
+
         if(canPlay){
             GameObject cardObj      = handCardObjects[listIndex];
             CardDisplay cardScript  = cardObj.GetComponent<CardDisplay>();
-            
-            AddCardToDiscard(hand[listIndex]);
-            hand.RemoveAt(listIndex);
-            handCardObjects.RemoveAt(listIndex);
 
+            if(cardScript.card.costEmotion > curEmotion || cardScript.card.energyCost > curEnergy + curOvercharge){
+                //bad sound (didn't play the card due to not enough resources)
+                return;
+            }
 
+            curEmotion      -= cardScript.card.costEmotion;
+            curOvercharge   -= cardScript.card.energyCost;
+            if(curOvercharge < 0){
+                curEnergy += curOvercharge;
+                curOvercharge = 0;
+            }
+
+            float rand  = UnityEngine.Random.Range(0.0f, 100.0f);
+            int hpCost  = cardScript.card.healthCost;
+
+            if(cardScript.card.percentChanceToTakeLessHP >= rand){
+                hpCost = cardScript.card.luckyHealthCost;
+            }
+
+            TakeDamage(hpCost);
+            if(cardScript.card.isCrowdwork){ eventManager.highlightCrowdMembers(cardScript.card.cardType);}
+            //good sound (played the card)
             AudioSource.PlayClipAtPoint(cardScript.ReturnAudioClip(), Vector3.zero);
+
+            Card cardToAdd = hand[listIndex];
             
-            for(int i = listIndex; i < maxHandSize-1; i++){
-                moveCardObjects[i] = moveCardObjects[i+1];
-                if(i < handCardObjects.Count){
-                    handCardObjects[i].GetComponent<CardDisplay>().SetListPos(i);
-                }
+            DiscardCardAtIndex(listIndex, false);
+            
+
+            bool endTurn = DoCardEffects(cardScript);
+            if(!cardToAdd.stale){
+                AddCardToDiscard(cardToAdd);
             }
 
             UpdateTexts();
             Destroy(cardObj.gameObject);
+
+            if(endTurn){
+                EndTurn();
+            }
         }
+    }
+
+    public void TakeDamage(int damage){
+        //animations/fx?
+        curHealth -= damage;
+        if(curHealth<=0){
+            GameOver();
+        }
+    }
+
+    private void GameOver(){
+        Debug.Log("GAME OVER!");
+    }
+
+    private bool DoCardEffects(CardDisplay card){
+        bool autoEndTurn = false;
+
+        curOvercharge += card.card.addOvercharge;
+        curEnergy     += card.card.addEnergy;
+        curEmotion    += card.card.addEmotion;
+        curHealth     += card.card.addHealth;
+
+        if(card.card.endTurnOnDiscardFailure && hand.Count < card.card.discardRandomCards){
+            autoEndTurn = true;
+        }
+        if(!curSuspense && card.card.endTurnIfNotSuspense){
+            autoEndTurn = true;
+        }
+        if(card.card.endsTurn){
+            autoEndTurn = true;
+        }
+        if(card.card.entersSuspense){
+            curSuspense = true;
+        }
+        
+        DrawCards(card.card.drawFromDiscard, false, true);
+        DrawCards(card.card.drawRandomFromDiscard, true, true);
+        DiscardRandomCards(card.card.discardRandomCards);
+
+        return autoEndTurn;
     }
 
     public void EndTurn(){
         //refresh energy
+        curOvercharge = 0;
+        curEnergy += 3;
+        if(curEnergy > maxEnergy){
+            curEnergy=maxEnergy;
+        }
+        UpdateTexts();
         StartTurn();
     }
 }
