@@ -15,7 +15,8 @@ using UnityEngine.UIElements;
 }
 public class CrowdMember : MonoBehaviour 
 {
-    public Mood currMood = Mood.Neutral;
+    [SerializeField] private Mood currMood = Mood.Neutral;
+    [SerializeField] private ParticleSystem confetti;
 
     [SerializeField] private List<Sprite> faces;
     private Dictionary<CardTypeEnum, CardTypeEnum[]> dislikes = new Dictionary<CardTypeEnum, CardTypeEnum[]>(){
@@ -39,13 +40,14 @@ public class CrowdMember : MonoBehaviour
 
     void Start(){
         curFunny=(int)(maxFunny/2);
+        GameObject confettiObj = Instantiate(confetti.gameObject, transform.position, Quaternion.identity);
 
-        BeNeutral();
+        // BeNeutral();
     }
 
     void Update()
     { 
-        transform.position = Vector2.MoveTowards(transform.position, targetPosition, Time.deltaTime * speed );
+        // transform.position = Vector2.MoveTowards(transform.position, targetPosition, Time.deltaTime * speed );
 
         switch (currMood)
         {
