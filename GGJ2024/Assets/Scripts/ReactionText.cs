@@ -5,7 +5,7 @@ using TMPro;
 
 public class ReactionText : MonoBehaviour
 {
-    public float lifeTime = 2f;
+    public float lifeTime = 3f;
 
     void Start()
     {
