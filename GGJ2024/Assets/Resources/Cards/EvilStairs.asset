@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: EvilStairs
   m_EditorClassIdentifier: 
   description: My mom doesn't trust stairs, says they're always up to something!
+    ~ GRANTS 1 Overcharge ~
   isCrowdwork: 0
   cardType: 0
   artwork: {fileID: 21300000, guid: acf2595b6ab184b8b9e5479ae2b6a988, type: 3}
@@ -36,3 +37,4 @@ MonoBehaviour:
   endTurnOnDiscardFailure: 0
   entersSuspense: 0
   endTurnIfNotSuspense: 0
+  endsTurn: 0

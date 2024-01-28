@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecd81a036a2a7438db6fe8c4d2e04f91, type: 3}
   m_Name: Calendar
   m_EditorClassIdentifier: 
-  description: I'm afraid for the calendar, its' days are numbered
+  description: I'm afraid for the calendar, its' days are numbered ~ ENDS TURN ~
   isCrowdwork: 0
   cardType: 1
   artwork: {fileID: 21300000, guid: 667b260c5614149eea018e7383f622d9, type: 3}

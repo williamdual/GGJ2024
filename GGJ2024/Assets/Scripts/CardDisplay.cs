@@ -66,6 +66,12 @@ public class CardDisplay : MonoBehaviour
         glow.SetActive(true);
     }
 
+    private void OnMouseEnter() {
+        gameObject.GetComponent<Canvas>().overrideSorting = true;
+        gameObject.GetComponent<Canvas>().sortingOrder = 5;
+        gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x + 0.005f, gameObject.transform.localScale.y + 0.005f, gameObject.transform.localScale.z + 0.005f);
+    }
+
     private void OnMouseDown() {
         gameManager.SetCardCanMove(false, listPos);
         movingTowardsMouse = true;
@@ -82,6 +88,9 @@ public class CardDisplay : MonoBehaviour
     private void OnMouseExit() {
         glow.SetActive(false);
         gameManager.SetCardCanMove(true, listPos);
+        gameObject.GetComponent<Canvas>().sortingOrder = 0;
+        gameObject.GetComponent<Canvas>().overrideSorting = false;
+        gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x - 0.005f, gameObject.transform.localScale.y - 0.005f, gameObject.transform.localScale.z - 0.005f);
     }
 
     public AudioClip ReturnAudioClip(){

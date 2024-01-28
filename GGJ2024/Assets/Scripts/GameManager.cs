@@ -55,9 +55,8 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI deckText;
     private bool canPlay;
 
-    private int maxEnergy = 20;
-    private int curEnergy = 10;
-    private int maxHealth = 100;
+    private int curEnergy = 3;
+    private int maxHealth = 6;
     private int curHealth;
     private int curEmotion = 0;
     private int curOvercharge = 0;
@@ -96,6 +95,7 @@ public class GameManager : MonoBehaviour
             cardLibrary.Add(cardArr[i].name, cardArr[i]);
         }
 
+        curHealth       = maxHealth;
         deck            = new List<Card>();
         discard         = new List<Card>();
         hand            = new List<Card>();
@@ -135,13 +135,13 @@ public class GameManager : MonoBehaviour
     }
 
     public void UpdateTexts(){
-        discardText.text   = "Discard: " + discard.Count.ToString();
-        deckText.text      = "Deck: " + deck.Count.ToString();
+        discardText.text   = "Used Jokes: " + discard.Count.ToString();
+        deckText.text      = "Jokes: " + deck.Count.ToString();
 
-        energyText.text    = "Energy: " + curEnergy.ToString();
-        healthText.text    = "Health: " + curHealth.ToString();
-        emotionText.text   = "Emotion: " + curEmotion.ToString();
-        suspenseText.text  = "Suspense: " + curSuspense.ToString();
+        energyText.text      = "Energy: " + curEnergy.ToString();
+        healthText.text      = "Health: " + curHealth.ToString() + "/" + maxHealth.ToString();
+        emotionText.text     = "Emotion: " + curEmotion.ToString();
+        suspenseText.text    = "Suspense: " + curSuspense.ToString();
         overchargeText.text  = "Overcharge: " + curOvercharge.ToString();
     }
 
@@ -388,9 +388,6 @@ public class GameManager : MonoBehaviour
             //refresh energy
             curOvercharge = 0;
             curEnergy += 3;
-            if(curEnergy > maxEnergy){
-                curEnergy=maxEnergy;
-            }
             UpdateTexts();
             StartTurn();
         }

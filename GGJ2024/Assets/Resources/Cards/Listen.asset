@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecd81a036a2a7438db6fe8c4d2e04f91, type: 3}
   m_Name: Listen
   m_EditorClassIdentifier: 
-  description: My wife says I never listen... Or something like that
+  description: My wife says I never listen... Or something like that ~ GRANTS 3 Overcharge
+    ~
   isCrowdwork: 0
   cardType: 0
   artwork: {fileID: 21300000, guid: 667b260c5614149eea018e7383f622d9, type: 3}
@@ -36,3 +37,4 @@ MonoBehaviour:
   endTurnOnDiscardFailure: 0
   entersSuspense: 0
   endTurnIfNotSuspense: 0
+  endsTurn: 0

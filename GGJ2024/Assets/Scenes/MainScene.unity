@@ -723,13 +723,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardCanvas: {fileID: 2056159471}
-  cornyPrefab: {fileID: 7445708549372900203, guid: 6c28a2294602b4540bc22424398c94ab, type: 3}
-  familyPrefab: {fileID: 7445708549372900203, guid: d9240fdd1a6ce41b9b873ffea221e374, type: 3}
-  darkPrefab: {fileID: 7445708549372900203, guid: 1367c1f3ec8bb459d82f38fe7a007225, type: 3}
+  cornyPrefab: {fileID: 7445708549372900203, guid: 4fb44b74afd7141c8bf5586006103ae9, type: 3}
+  familyPrefab: {fileID: 7445708549372900203, guid: 0f73b1c916e5a4d7bbf98a3bb5262404, type: 3}
+  darkPrefab: {fileID: 7445708549372900203, guid: 713f85993a8ab42f9a049cdff1e174ca, type: 3}
   animalsPrefab: {fileID: 7445708549372900203, guid: f34c19fb88aa14c62a7c3c7bf040cedc, type: 3}
-  romancePrefab: {fileID: 7445708549372900203, guid: 0bc4fb74692b241bcb1375370d2461cc, type: 3}
-  deprecatingPrefab: {fileID: 7445708549372900203, guid: 90c520e8a0a4d4962a2e9ecdd6a1f8ab, type: 3}
-  propPrefab: {fileID: 7445708549372900203, guid: 352f59a018f064717a363df966b13198, type: 3}
+  romancePrefab: {fileID: 7445708549372900203, guid: 05b2aa73e60aa46dc9c03831b4212aba, type: 3}
+  deprecatingPrefab: {fileID: 7445708549372900203, guid: f8c8e4a1b59fe458685df72226b4a29c, type: 3}
+  propPrefab: {fileID: 7445708549372900203, guid: 515d95f6132184e309ded0ce9b691455, type: 3}
   maxHandSize: 8
   startHandSize: 5
   deckPosition: {fileID: 472625528}
@@ -805,7 +805,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 7.5, y: -0.75}
+  m_AnchoredPosition: {x: 4.5, y: -3.75}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &396520263
@@ -1144,7 +1144,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5, y: -0.75}
+  m_AnchoredPosition: {x: 4.5, y: -2.25}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &516071181
@@ -1179,7 +1179,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -3.5}
+  m_AnchoredPosition: {x: 7, y: 0.75}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &654279926
@@ -1384,7 +1384,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.5, y: -0.75}
+  m_AnchoredPosition: {x: 4.5, y: -0.75}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &823121775
@@ -1555,7 +1555,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5, y: -3.5}
+  m_AnchoredPosition: {x: 7, y: -2.25}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &949664794
@@ -1626,7 +1626,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.5, y: -3.5}
+  m_AnchoredPosition: {x: 7, y: -0.75}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1092503914
@@ -2523,7 +2523,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Deck: 0'
+  m_text: 'Jokes: 0'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3624,7 +3624,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 7.5, y: -3.5}
+  m_AnchoredPosition: {x: 7, y: -3.75}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2055128915
@@ -3659,7 +3659,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.75}
+  m_AnchoredPosition: {x: 4.5, y: 0.75}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2056159468
@@ -3830,7 +3830,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Discard: 0'
+  m_text: 'Used Jokes: 0'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

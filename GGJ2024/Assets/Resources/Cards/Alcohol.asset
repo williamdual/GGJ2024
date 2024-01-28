@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Alcohol
   m_EditorClassIdentifier: 
   description: 'Alcohol is a perfect solvent: It dissolves marriages, families and
-    careers'
+    careers ~ STALE Card ~'
   isCrowdwork: 0
   cardType: 4
   artwork: {fileID: 21300000, guid: 667b260c5614149eea018e7383f622d9, type: 3}
@@ -37,3 +37,4 @@ MonoBehaviour:
   endTurnOnDiscardFailure: 0
   entersSuspense: 0
   endTurnIfNotSuspense: 0
+  endsTurn: 0
