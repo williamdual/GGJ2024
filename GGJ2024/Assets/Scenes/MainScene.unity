@@ -1385,7 +1385,7 @@ MonoBehaviour:
   deckSelectObj: {fileID: 1930676197}
   startingDeck: 0
   numOfCardsToOffer: 3
-  numOfCardsToAccept: 2
+  numOfCardsToAccept: 1
   shopPositions:
   - {fileID: 2052665295}
   - {fileID: 43969528}
