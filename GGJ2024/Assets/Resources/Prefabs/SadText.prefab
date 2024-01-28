@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 9058300423432602372}
   - component: {fileID: 5215045063325798895}
   - component: {fileID: 1600459365354977329}
-  - component: {fileID: 1836135049288865520}
+  - component: {fileID: 3860057207122379074}
   m_Layer: 0
-  m_Name: MainText
+  m_Name: SadText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 5215045063325798895}
   m_maskType: 0
---- !u!114 &1836135049288865520
+--- !u!114 &3860057207122379074
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -183,7 +183,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8901807985393430425}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b0c1be3764301d44a591e82d9ee54c0, type: 3}
+  m_Script: {fileID: 11500000, guid: bb3986f52bffcbc4ea34865880a4db78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lifeTime: 2

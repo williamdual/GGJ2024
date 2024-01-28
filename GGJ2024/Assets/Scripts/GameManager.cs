@@ -10,6 +10,7 @@ using UnityEngine.Animations;
 
 public class GameManager : MonoBehaviour
 {
+    private List<Card> stalePile;
     private EventManager eventManager;
     private float CARD_DRAW_SPEED           = 12.0f;
 
@@ -80,6 +81,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        stalePile = new List<Card>();
         prefabMap = getPreFabMap();
 
         cardLibrary = new Dictionary<string, Card>();
@@ -123,7 +125,33 @@ public class GameManager : MonoBehaviour
         {CardTypeEnum.Corny, cornyPrefab}};
     }
 
+    public void RegenerateDeck(){
+        for(int i = 0; i < stalePile.Count; i++){
+            AddCardToTopDeck(stalePile[i]);
+        }
+        for(int i = 0; i < discard.Count; i++){
+            AddCardToTopDeck(discard[i]);
+        }
+        for(int i = 0; i < hand.Count; i++){
+            Destroy(handCardObjects[i]);
+            AddCardToTopDeck(hand[i]);
+        }
+
+        handCardObjects.Clear();
+        hand.Clear();
+        discard.Clear();
+        stalePile.Clear();
+
+        Shuffle(deck);
+    }
+
     public void StartRound(){
+        //Set up for new set/round
+        Shuffle(deck);
+        curEnergy = 3;
+        curOvercharge = 0;
+        curEmotion = 0;
+        UpdateTexts();
         StartTurn();
     }
     public void AddCardToBottomDeck(Card newCard){
@@ -136,6 +164,10 @@ public class GameManager : MonoBehaviour
 
     public void AddCardToDiscard(Card newCard){
         discard.Insert(discard.Count, newCard); 
+    }
+
+    public void AddToStalePile(Card newCard){
+        stalePile.Add(newCard);
     }
 
     public void UpdateTexts(){
@@ -311,7 +343,7 @@ public class GameManager : MonoBehaviour
 
             //means card is being played
             int totalDmg   = cardScript.card.funnyValue;
-            float randNum  = UnityEngine.Random.Range(cardScript.card.minFunnyValuePercentRange, cardScript.card.maxFunnyValuePercentRange);
+            float randNum  = UnityEngine.Random.Range(cardScript.card.minFunnyValuePercentRange, cardScript.card.maxFunnyValuePercentRange)/100;
             totalDmg = (int)(totalDmg * randNum);
             if(curSuspense){
                 totalDmg = (int)(totalDmg * 1.5f);
@@ -356,6 +388,9 @@ public class GameManager : MonoBehaviour
             bool endTurn = DoCardEffects(cardScript);
             if(!cardToAdd.stale){
                 AddCardToDiscard(cardToAdd);
+            }
+            else{
+                AddToStalePile(cardToAdd);
             }
 
             if(disableSuspense){
