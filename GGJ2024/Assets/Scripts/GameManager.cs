@@ -381,7 +381,7 @@ public class GameManager : MonoBehaviour
         if(canPlay){
             GameObject cardObj      = handCardObjects[listIndex];
             CardDisplay cardScript  = cardObj.GetComponent<CardDisplay>();
-            Card cardToAdd = hand[listIndex];
+            Card cardToAdd          = hand[listIndex];
 
             if(cardScript.card.costEmotion > curEmotion || cardScript.card.energyCost > curEnergy + curOvercharge){
                 //bad sound (didn't play the card due to not enough resources)
@@ -500,7 +500,7 @@ public class GameManager : MonoBehaviour
 
     public void EndTurn(){
 
-        if(eventManager.gameState == EventManager.GameState.Round){
+        if(eventManager.gameState == EventManager.GameState.Round && canPlay){
             //refresh energy
             List<CrowdMember> cms = FindObjectsOfType<CrowdMember>().ToList();
             foreach (CrowdMember cm in cms)
