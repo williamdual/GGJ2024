@@ -18,11 +18,11 @@ using UnityEngine.UIElements;
 
 public class CrowdMember : MonoBehaviour 
 {
-    public static List<String> AngrySounds      = new List<String>() {"Mad1"};
-    public static List<String> SadSounds        = new List<String>() {"KindaMad1"};
-    public static List<String> NeutralSounds    = new List<String>() {"Neutral1"};
-    public static List<String> HappySounds      = new List<String>() {"KindaHappy1"};
-    public static List<String> EcstaticSounds   = new List<String>() {"Happy1"};
+    public static List<String> AngrySounds      = new List<String>() {"Mad1", "Mad2", "Mad3", "MadO1"};
+    public static List<String> SadSounds        = new List<String>() {"KindaMadO1", "KindaMadO2","KindaMad1","KindaMad2","KindaMad3"};
+    public static List<String> NeutralSounds    = new List<String>() {"Netural1", "Netural2", "Netural3", "NeturalO1"};
+    public static List<String> HappySounds      = new List<String>() {"KindaHapyO1", "KindaHappy1", "KindaHappy2", "KindaHappy3"};
+    public static List<String> EcstaticSounds   = new List<String>() {"HappyO1","HappyO2","Happy1"};
     
 
     const int minFont = 12;
@@ -218,6 +218,16 @@ public class CrowdMember : MonoBehaviour
 
     public void BadLeave(){
         Debug.Log("A crowd member has badly left.");
+        int randNum = UnityEngine.Random.Range(0, 3);
+        if(randNum == 0){
+            soundManager.PlaySound("CrowdAngryLeavingVoice1");
+        }
+        else if(randNum == 1){
+            soundManager.PlaySound("CrowdAngryLeavingVoice2");
+        }
+        else{
+            soundManager.PlaySound("CrowdAngryLeavingEffect1");
+        }
         gameManager.TakeDamage(1);
         GameObject confettiObj = Instantiate(sadParticles.gameObject, transform.position, Quaternion.identity);
         StartCoroutine(BlipOut());
@@ -226,6 +236,13 @@ public class CrowdMember : MonoBehaviour
 
     public void GoodLeave(){
         Debug.Log("A crowd member has well left.");
+        int randNum = UnityEngine.Random.Range(0, 2);
+        if(randNum == 0){
+            soundManager.PlaySound("Clap1");
+        }
+        else{
+            soundManager.PlaySound("ClapSlow1");
+        }
         gameManager.AddPeopleHappy(1);
         GameObject confettiObj = Instantiate(confetti.gameObject, transform.position, Quaternion.identity);
         StartCoroutine(BlipOut());
@@ -236,7 +253,7 @@ public class CrowdMember : MonoBehaviour
 
     public void BeEcstatic(){
         int randInd = UnityEngine.Random.Range(0, EcstaticSounds.Count);
-        soundManager.PlaySound(EcstaticSounds[randInd]);
+        DelaySound(EcstaticSounds[randInd]);
         GameObject body = transform.Find("Body").gameObject;
         body.GetComponent<SpriteRenderer>().sprite = faces[0];
         Animator anim = transform.Find("ArmsParent").GetComponent<Animator>();
@@ -246,9 +263,15 @@ public class CrowdMember : MonoBehaviour
 
     }
 
+    public IEnumerator DelaySound(String soundKey){
+        float randTime = UnityEngine.Random.Range(0.0f, 1.25f);
+        yield return new WaitForSeconds(randTime);
+        soundManager.PlaySound(soundKey);
+    }
+
     public void BeHappy(){
         int randInd = UnityEngine.Random.Range(0, HappySounds.Count);
-        soundManager.PlaySound(HappySounds[randInd]);
+        DelaySound(HappySounds[randInd]);
         GameObject body = transform.Find("Body").gameObject;
         body.GetComponent<SpriteRenderer>().sprite = faces[1];
         Animator anim = transform.Find("ArmsParent").GetComponent<Animator>();
@@ -260,7 +283,7 @@ public class CrowdMember : MonoBehaviour
 
     public void BeNeutral(){
         int randInd = UnityEngine.Random.Range(0, NeutralSounds.Count);
-        soundManager.PlaySound(NeutralSounds[randInd]);
+        DelaySound(NeutralSounds[randInd]);
         GameObject body = transform.Find("Body").gameObject;
         body.GetComponent<SpriteRenderer>().sprite = faces[2];
         Animator anim = transform.Find("ArmsParent").GetComponent<Animator>();
@@ -271,7 +294,7 @@ public class CrowdMember : MonoBehaviour
 
     public void BeSad(){
         int randInd = UnityEngine.Random.Range(0, SadSounds.Count);
-        soundManager.PlaySound(SadSounds[randInd]);
+        DelaySound(SadSounds[randInd]);
         GameObject body = transform.Find("Body").gameObject;
         body.GetComponent<SpriteRenderer>().sprite = faces[3];
         Animator anim = transform.Find("ArmsParent").GetComponent<Animator>();
@@ -283,7 +306,7 @@ public class CrowdMember : MonoBehaviour
 
     public void BeAngry(){
         int randInd = UnityEngine.Random.Range(0, AngrySounds.Count);
-        soundManager.PlaySound(AngrySounds[randInd]);
+        DelaySound(AngrySounds[randInd]);
         GameObject body = transform.Find("Body").gameObject;
         body.GetComponent<SpriteRenderer>().sprite = faces[4];
         Animator anim = transform.Find("ArmsParent").GetComponent<Animator>();

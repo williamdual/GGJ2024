@@ -11,6 +11,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    private int numHappyThreshold = 4;
     private List<Card> stalePile;
     private EventManager eventManager;
 
@@ -155,6 +156,10 @@ public class GameManager : MonoBehaviour
 
     public void AddPeopleHappy(int num){
         peopleHappy += num;
+        if(peopleHappy >= numHappyThreshold){
+            numHappyThreshold = numHappyThreshold + numHappyThreshold + 1;
+            eventManager.cycleState();
+        }
     }
 
     public void StartRound(){
