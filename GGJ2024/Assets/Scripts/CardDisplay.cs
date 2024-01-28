@@ -122,7 +122,7 @@ public class CardDisplay : MonoBehaviour
 
     private void OnMouseExit() {
         glow.SetActive(false);
-        if(playingCard && cardNature == CardNature.Playable){
+        if(cardNature == CardNature.Playable){
         gameManager.SetCardCanMove(true, listPos);
 
         gameObject.GetComponent<Canvas>().sortingOrder = 0;

@@ -1147,7 +1147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086ac9a1112ce4e45adb5a62d2861832, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainOptionCanvas: {fileID: 145751308}
+  mainOptionCanvas: {fileID: 237638434}
   deckSelectObj: {fileID: 1930676197}
   startingDeck: 0
   numOfCardsToOffer: 3
@@ -4827,5 +4827,4 @@ SceneRoots:
   - {fileID: 2144119278}
   - {fileID: 1672584893}
   - {fileID: 1004704678}
-  - {fileID: 1180783581}
   - {fileID: 695644911}
