@@ -120,7 +120,7 @@ public class CrowdMember : MonoBehaviour
     public void TakeDamage(int funnyDamage, CardTypeEnum cardType){
         Debug.Log("(TYPE: " + type.ToString() + ", CARD TYPE: " + cardType.ToString() + ")\nTaking pre-damage: " + funnyDamage.ToString());
         if(dislikes[type].Contains(cardType)){
-            funnyDamage = ((int)(funnyDamage/2)) * -1;
+            funnyDamage = ((int)(funnyDamage)) * -1;
         }
         else if(cardType == type){
             funnyDamage = (int)(funnyDamage*1.5f);
@@ -131,9 +131,11 @@ public class CrowdMember : MonoBehaviour
         curFunny += funnyDamage;
 
         int randGen = UnityEngine.Random.Range(0, 101);
+        float minRandLife = 1.5f;
+        float maxRandLife = 4.0f;
 
         //if we 'say' smth
-        if(randGen <= 10){
+        if(randGen <= 10 * ((Math.Abs(funnyDamage) * 1.7f) + 1)){
             if(funnyDamage > 0){
                 Debug.Log("Spawned happy text");
                 int randFont    = UnityEngine.Random.Range(minFont, maxFont);
@@ -141,7 +143,7 @@ public class CrowdMember : MonoBehaviour
                 GameObject txt  = Instantiate(happyTextPrefab, gameObject.transform.position, Quaternion.identity, gameObject.transform);
                 txt.gameObject.GetComponent<TextMeshPro>().text = happyQuotes[randIndex];
                 txt.gameObject.GetComponent<TextMeshPro>().fontSize = randFont;
-                float randLife = UnityEngine.Random.Range(1.0f, 3.0f);
+                float randLife = UnityEngine.Random.Range(minRandLife, maxRandLife);
                 txt.gameObject.GetComponent<HappyReactionText>().lifeTime = randLife;
             }
             else if(funnyDamage < 0){
@@ -151,7 +153,7 @@ public class CrowdMember : MonoBehaviour
                 GameObject txt = Instantiate(sadTextPrefab, gameObject.transform.position, Quaternion.identity, gameObject.transform);
                 txt.gameObject.GetComponent<TextMeshPro>().text = sadQuotes[randIndex];
                 txt.gameObject.GetComponent<TextMeshPro>().fontSize = randFont;
-                float randLife = UnityEngine.Random.Range(1.5f, 4.0f);
+                float randLife = UnityEngine.Random.Range(minRandLife, maxRandLife);
                 txt.gameObject.GetComponent<SadReactionText>().lifeTime = randLife;
             }
         }

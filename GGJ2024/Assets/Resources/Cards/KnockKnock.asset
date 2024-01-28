@@ -15,7 +15,7 @@ MonoBehaviour:
   description: "Knock knock. Who\u2019s there? Tank. Tank who? You\u2019re welcome"
   isCrowdwork: 0
   cardType: 6
-  artwork: {fileID: 21300000, guid: 667b260c5614149eea018e7383f622d9, type: 3}
+  artwork: {fileID: 21300000, guid: 57764c9ed33f6453dadf03f83b4b61a0, type: 3}
   energyCost: 1
   funnyValue: 2
   minFunnyValuePercentRange: 100
@@ -36,3 +36,4 @@ MonoBehaviour:
   endTurnOnDiscardFailure: 0
   entersSuspense: 0
   endTurnIfNotSuspense: 0
+  endsTurn: 0

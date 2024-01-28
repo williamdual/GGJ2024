@@ -15,7 +15,7 @@ MonoBehaviour:
   description: I'm afraid for the calendar, its' days are numbered ~ENDS TURN~
   isCrowdwork: 0
   cardType: 1
-  artwork: {fileID: 21300000, guid: 667b260c5614149eea018e7383f622d9, type: 3}
+  artwork: {fileID: 21300000, guid: 27d6e8e90c591454fa1805e9d4e2c2b4, type: 3}
   energyCost: 4
   funnyValue: 2
   minFunnyValuePercentRange: 100

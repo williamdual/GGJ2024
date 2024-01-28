@@ -42,8 +42,8 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI energyText;
     private TextMeshProUGUI healthText;
     private TextMeshProUGUI emotionText;
-    private TextMeshProUGUI suspenseText;
     private TextMeshProUGUI overchargeText;
+    private GameObject      suspenseObj;
 
     public List<Card> deck;
 
@@ -102,8 +102,8 @@ public class GameManager : MonoBehaviour
         energyText      = cardCanvas.gameObject.transform.Find("Energy/EnergyText").GetComponent<TextMeshProUGUI>();
         healthText      = cardCanvas.gameObject.transform.Find("Health/HealthText").GetComponent<TextMeshProUGUI>();
         emotionText     = cardCanvas.gameObject.transform.Find("Emotion/EmotionText").GetComponent<TextMeshProUGUI>();
-        suspenseText    = cardCanvas.gameObject.transform.Find("Suspense/SuspenseText").GetComponent<TextMeshProUGUI>();
         overchargeText  = cardCanvas.gameObject.transform.Find("Overcharge/OverchargeText").GetComponent<TextMeshProUGUI>();
+        suspenseObj     = cardCanvas.gameObject.transform.Find("Suspense").gameObject;
 
         //init bool array
         moveCardObjects = new bool[maxHandSize];
@@ -149,9 +149,14 @@ public class GameManager : MonoBehaviour
     public void StartRound(){
         //Set up for new set/round
         Shuffle(deck);
-        curEnergy = 3;
+        curEnergy     = 3;
         curOvercharge = 0;
-        curEmotion = 0;
+        curEmotion    = 0;
+        curHealth     += 1;
+        if(curHealth > maxHealth){
+            curHealth = maxHealth;
+        }
+        curSuspense   = false;
         UpdateTexts();
         StartTurn();
     }
@@ -177,14 +182,18 @@ public class GameManager : MonoBehaviour
     }
 
     public void UpdateTexts(){
-        discardText.text   = "Used Jokes: " + discard.Count.ToString();
-        deckText.text      = "Jokes: " + deck.Count.ToString();
+        discardText.text   = discard.Count.ToString();
+        deckText.text      = deck.Count.ToString();
 
-        energyText.text      = "Energy: " + curEnergy.ToString();
-        healthText.text      = "Health: " + curHealth.ToString() + "/" + maxHealth.ToString();
-        emotionText.text     = "Emotion: " + curEmotion.ToString();
-        suspenseText.text    = "Suspense: " + curSuspense.ToString();
-        overchargeText.text  = "Overcharge: " + curOvercharge.ToString();
+        energyText.text      = curEnergy.ToString();
+        healthText.text      = curHealth.ToString() + "/" + maxHealth.ToString();
+        emotionText.text     = curEmotion.ToString();
+        overchargeText.text  = curOvercharge.ToString();
+
+        suspenseObj.SetActive(false);
+        if(curSuspense){
+            suspenseObj.SetActive(true);
+        }
     }
 
     // Update is called once per frame

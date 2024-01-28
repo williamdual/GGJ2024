@@ -15,7 +15,7 @@ MonoBehaviour:
   description: How do you get a squirrel to like you? Act like a nut ~GRANTS 2 Emotion~
   isCrowdwork: 0
   cardType: 2
-  artwork: {fileID: 21300000, guid: 667b260c5614149eea018e7383f622d9, type: 3}
+  artwork: {fileID: 21300000, guid: 3eb823c45a8e24aa889159f3b7a6eb11, type: 3}
   energyCost: 1
   funnyValue: 1
   minFunnyValuePercentRange: 100

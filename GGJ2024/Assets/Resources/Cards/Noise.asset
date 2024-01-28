@@ -15,7 +15,7 @@ MonoBehaviour:
   description: Everybody make some noise ~GRANTS 1 Energy~
   isCrowdwork: 1
   cardType: 6
-  artwork: {fileID: 21300000, guid: 667b260c5614149eea018e7383f622d9, type: 3}
+  artwork: {fileID: 21300000, guid: e367ce005266241e9a45ecadf52800f9, type: 3}
   energyCost: 0
   funnyValue: 0
   minFunnyValuePercentRange: 0
