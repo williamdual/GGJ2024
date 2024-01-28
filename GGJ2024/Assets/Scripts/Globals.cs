@@ -25,5 +25,23 @@ public static Dictionary<CardTypeEnum, List<String>> CardTypeToNonStartingCardNa
         {CardTypeEnum.Deprecating, new List<String>() {"Unemployed", "GaryAlcoholic", "Alcohol", "Circumsision"}}
 };
 
+
+public static List<CardTypeEnum> CrowdMemberTypesList = new List<CardTypeEnum>(){
+        CardTypeEnum.Family,
+        CardTypeEnum.Dark,
+        CardTypeEnum.Animals,
+        CardTypeEnum.Romance,
+        CardTypeEnum.Deprecating,
+        CardTypeEnum.Prop,
+        CardTypeEnum.Corny,
+        CardTypeEnum.Family,
+        CardTypeEnum.Animals,
+        CardTypeEnum.Romance,
+        CardTypeEnum.Deprecating,
+        CardTypeEnum.Prop,
+        CardTypeEnum.Corny,
+        CardTypeEnum.Family,
+};
+
 }
 

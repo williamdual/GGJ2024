@@ -57,18 +57,18 @@ public class Spawner : MonoBehaviour
     void Start()
     {
         floor = SpawnFloor(0, -1);
+        floor.GetComponent<SpriteRenderer>().enabled = false;
         topLeft = floor.GetComponent<Renderer>().bounds.min;
         bottomRight = floor.GetComponent<Renderer>().bounds.max;
     }
     //Debug Function
 
 
-    // public void OnClick()
-    // {  
-    //     GameObject crowdMember = SpawnCrowdMember();   
-    //     crowdMember.GetComponent<CrowdMember>().GetSize();
-    //     ChooseRandomPosition(crowdMember);
-    //     // Debug.Log($" Crowd Members: {floor.GetComponent<Floor>().occupiedPositions.Count}");
-    //     // Debug.Log($" Population Density: {floor.GetComponent<Floor>().GetPopulationDensity()}");
-    // }
+    public void OnClick()
+    {  
+        GameObject crowdMember = SpawnCrowdMember();   
+        crowdMember.GetComponent<CrowdMember>().GetSize();
+        ChooseRandomPosition(crowdMember);
+
+    }
 }

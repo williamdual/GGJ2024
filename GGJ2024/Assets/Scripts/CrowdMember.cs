@@ -49,7 +49,14 @@ public class CrowdMember : MonoBehaviour
     [SerializeField] private int curFunny = 10;
 
     void Start(){
+
+        transform.localScale = Vector3.zero;
+        StartCoroutine(BlipIn());
+        int rand = UnityEngine.Random.Range(0, Globals.CrowdMemberTypesList.Count);
+        type = Globals.CrowdMemberTypesList[rand];
         curFunny=(int)(maxFunny/2);
+
+        transform.position = targetPosition;
 
         happyQuotes = new List<String>();
         sadQuotes   = new List<String>();
@@ -72,8 +79,7 @@ public class CrowdMember : MonoBehaviour
         sadQuotes.Add("Get a new joke book...");
         sadQuotes.Add("I'm 'bouta puke");
         sadQuotes.Add("*YAWN*");
-        GameObject confettiObj = Instantiate(confetti.gameObject, transform.position, Quaternion.identity);
-
+        GameObject confettiObj = Instantiate(confetti.gameObject, new Vector3(transform.position.x, transform.position.y - 0.2f, transform.position.z),  Quaternion.identity);
         BeNeutral();
     }
 
@@ -175,6 +181,9 @@ public class CrowdMember : MonoBehaviour
 
     public void GoodLeave(){
         Debug.Log("A crowd member has well left.");
+        GameObject confettiObj = Instantiate(confetti.gameObject, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+
     }
 
 
@@ -230,5 +239,16 @@ public class CrowdMember : MonoBehaviour
         GameObject body = transform.Find("Body").gameObject;
         body.GetComponent<SpriteRenderer>().color = Color.white;
 
+    }
+
+    private IEnumerator BlipIn()
+    {
+        float time = 0;
+        while (transform.localScale.x < 0.3f)
+        {
+            time += Time.deltaTime * 2;
+            transform.localScale = Vector3.Lerp(Vector3.zero, new Vector3(0.3f,0.3f,0.3f), time);
+            yield return null;
+        }
     }
 }
