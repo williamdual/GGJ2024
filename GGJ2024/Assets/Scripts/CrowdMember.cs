@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
-
 
 [SerializeField] public enum Mood
 {
@@ -15,7 +16,18 @@ using UnityEngine.UIElements;
 }
 public class CrowdMember : MonoBehaviour 
 {
+
+    private List<String> happyQuotes;
+    private List<String> sadQuotes;
+
+    private float ecstaticThreshold = 0.80f;
+    private float happyThreshold    = 0.60f;
+    private float neutralThreshold  = 0.40f;
+    private float sadThreshold      = 0.20f;
+    private float angryThreshold    = 0.00f;
     [SerializeField] private Mood currMood = Mood.Neutral;
+
+    public GameObject textPrefab;
     [SerializeField] private ParticleSystem confetti;
 
     [SerializeField] private List<Sprite> faces;
@@ -32,17 +44,37 @@ public class CrowdMember : MonoBehaviour
     public float speed = 1.0f;
     public float size; 
 
-    public float health; 
-
     public CardTypeEnum type;
     public int maxFunny = 20;
     private int curFunny = 10;
 
     void Start(){
         curFunny=(int)(maxFunny/2);
+
+        happyQuotes = new List<String>();
+        sadQuotes   = new List<String>();
+
+        happyQuotes.Add(" Ha\nHa!");
+        happyQuotes.Add("Good one!");
+        happyQuotes.Add("I pissed my pants!");
+        happyQuotes.Add("You got that right!");
+        happyQuotes.Add("You rock!");
+        happyQuotes.Add("Sweeeet!");
+        happyQuotes.Add("Good joke buddy!");
+        happyQuotes.Add("I hear ya!");
+        happyQuotes.Add("You on a roll!");
+
+        sadQuotes.Add("Boooo!");
+        sadQuotes.Add("You suck!");
+        sadQuotes.Add("This guy stinks!");
+        sadQuotes.Add("Get off the stage!");
+        sadQuotes.Add("Worse than Amy Schumer...");
+        sadQuotes.Add("Get a new joke book...");
+        sadQuotes.Add("I'm 'bouta puke");
+        sadQuotes.Add("*YAWN*");
         GameObject confettiObj = Instantiate(confetti.gameObject, transform.position, Quaternion.identity);
 
-        // BeNeutral();
+        BeNeutral();
     }
 
     void Update()
@@ -84,11 +116,54 @@ public class CrowdMember : MonoBehaviour
 
         //sfx depending on damage?
         curFunny += funnyDamage;
+
+        int randGen = UnityEngine.Random.Range(0, 101);
+
+        //if we 'say' smth
+        if(randGen <= 10){
+            if(funnyDamage > 0){
+                Debug.Log("Spawned happy text");
+                int randFont = UnityEngine.Random.Range(24, 37);
+                int randIndex = UnityEngine.Random.Range(0, happyQuotes.Count);
+                GameObject txt = Instantiate(textPrefab, gameObject.transform.position, Quaternion.identity, gameObject.transform);
+                txt.gameObject.GetComponent<TextMeshProUGUI>().text = happyQuotes[randIndex];
+                txt.gameObject.GetComponent<TextMeshProUGUI>().fontSize = randFont;
+            }
+            else if(funnyDamage < 0){
+                Debug.Log("Spawned sad text");
+                int randFont = UnityEngine.Random.Range(24, 37);
+                int randIndex = UnityEngine.Random.Range(0, sadQuotes.Count);
+                GameObject txt = Instantiate(textPrefab, gameObject.transform.position, Quaternion.identity, gameObject.transform);
+                txt.gameObject.GetComponent<TextMeshProUGUI>().text = sadQuotes[randIndex];
+                txt.gameObject.GetComponent<TextMeshProUGUI>().fontSize = randFont;
+            }
+        }
+
         if(curFunny <= 0){
             BadLeave();
+            return;
         }
         else if(curFunny >= maxFunny){
             GoodLeave();
+            return;
+        }
+        
+        float fractionResult = curFunny/maxFunny;
+
+        if(curFunny >= ecstaticThreshold){
+            BeEcstatic();
+        }
+        else if(curFunny >= happyThreshold){
+            BeHappy();
+        }
+        else if(curFunny >= neutralThreshold){
+            BeNeutral();
+        }
+        else if(curFunny >= sadThreshold){
+            BeSad();
+        }
+        else if(curFunny >= angryThreshold){
+            BeAngry();
         }
     }
 
