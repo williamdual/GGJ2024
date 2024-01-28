@@ -6,6 +6,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class GameManager : MonoBehaviour
 {
@@ -294,7 +295,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void PlayCard(int listIndex){
-        //TODO: dont forget funny dmg (+ suspense), dont forget crowdwork effect
+        //TODO: dont forget crowdwork effect
 
         if(canPlay){
             GameObject cardObj      = handCardObjects[listIndex];
@@ -304,6 +305,26 @@ public class GameManager : MonoBehaviour
                 //bad sound (didn't play the card due to not enough resources)
                 return;
             }
+
+            //means card is being played
+            int totalDmg   = cardScript.card.funnyValue;
+            float randNum  = UnityEngine.Random.Range(cardScript.card.minFunnyValuePercentRange, cardScript.card.maxFunnyValuePercentRange);
+            totalDmg = (int)(totalDmg * randNum);
+            if(curSuspense){
+                totalDmg = (int)(totalDmg * 1.5f);
+            }
+            bool disableSuspense = false;
+            if(totalDmg != 0){
+                disableSuspense = true;
+                CrowdMember[] allObjs = UnityEngine.Object.FindObjectsOfType<CrowdMember>();
+                for (int i = 0; i < allObjs.Length; i++)
+                {
+                    CrowdMember cm =  allObjs[i];
+                    
+                    cm.TakeDamage(totalDmg, cardScript.card.cardType);
+                }
+            }
+            
 
             curEmotion      -= cardScript.card.costEmotion;
             curOvercharge   -= cardScript.card.energyCost;
@@ -334,6 +355,9 @@ public class GameManager : MonoBehaviour
                 AddCardToDiscard(cardToAdd);
             }
 
+            if(disableSuspense){
+                curSuspense = false;
+            }
             UpdateTexts();
             Destroy(cardObj.gameObject);
 
