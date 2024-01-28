@@ -5,8 +5,19 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 
+[SerializeField] public enum Mood
+{
+    Ecstatic,
+    Happy,
+    Neutral,
+    Sad,
+    Angry
+}
 public class CrowdMember : MonoBehaviour 
 {
+    public Mood currMood = Mood.Neutral;
+
+    [SerializeField] private List<Sprite> faces;
     private Dictionary<CardTypeEnum, CardTypeEnum[]> dislikes = new Dictionary<CardTypeEnum, CardTypeEnum[]>(){
     {CardTypeEnum.Family, new CardTypeEnum[] {CardTypeEnum.Dark}},
     {CardTypeEnum.Dark, new CardTypeEnum[] {CardTypeEnum.Family, CardTypeEnum.Animals, CardTypeEnum.Romance, CardTypeEnum.Deprecating, CardTypeEnum.Prop, CardTypeEnum.Corny}},
@@ -28,11 +39,32 @@ public class CrowdMember : MonoBehaviour
 
     void Start(){
         curFunny=(int)(maxFunny/2);
+
+        BeNeutral();
     }
 
     void Update()
     { 
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, Time.deltaTime * speed );
+
+        switch (currMood)
+        {
+            case Mood.Ecstatic:
+                BeEcstatic();
+                break;
+            case Mood.Happy:
+                BeHappy();
+                break;
+            case Mood.Neutral:
+                BeNeutral();
+                break;
+            case Mood.Sad:
+                BeSad();
+                break;
+            case Mood.Angry:
+                BeAngry();
+                break;
+        }
     }
 
     public float GetSize()
@@ -64,5 +96,53 @@ public class CrowdMember : MonoBehaviour
 
     public void GoodLeave(){
         Debug.Log("A crowd member has well left.");
+    }
+
+
+    public void BeEcstatic(){
+        GameObject body = transform.Find("Body").gameObject;
+        body.GetComponent<SpriteRenderer>().sprite = faces[0];
+        Animator anim = transform.Find("ArmsParent").GetComponent<Animator>();
+        anim.gameObject.GetComponent<Animator>().Play("ArmsWave");
+        anim.speed = 2.0f;
+        
+
+    }
+
+    public void BeHappy(){
+        GameObject body = transform.Find("Body").gameObject;
+        body.GetComponent<SpriteRenderer>().sprite = faces[1];
+        Animator anim = transform.Find("ArmsParent").GetComponent<Animator>();
+        anim.gameObject.GetComponent<Animator>().Play("ArmsWave");
+        anim.speed =   1.0f;
+
+
+    }
+
+    public void BeNeutral(){
+        GameObject body = transform.Find("Body").gameObject;
+        body.GetComponent<SpriteRenderer>().sprite = faces[2];
+        Animator anim = transform.Find("ArmsParent").GetComponent<Animator>();
+        anim.gameObject.GetComponent<Animator>().Play("ArmsNeutral");
+        anim.speed =   1.0f;
+
+    }
+
+    public void BeSad(){
+        GameObject body = transform.Find("Body").gameObject;
+        body.GetComponent<SpriteRenderer>().sprite = faces[3];
+        Animator anim = transform.Find("ArmsParent").GetComponent<Animator>();
+        anim.gameObject.GetComponent<Animator>().Play("ArmsNeutral");
+        anim.speed =   1.0f;
+
+
+    }
+
+    public void BeAngry(){
+        GameObject body = transform.Find("Body").gameObject;
+        body.GetComponent<SpriteRenderer>().sprite = faces[4];
+        Animator anim = transform.Find("ArmsParent").GetComponent<Animator>();
+        anim.gameObject.GetComponent<Animator>().Play("ArmsNeutral");
+        anim.speed =   1.0f;
     }
 }
